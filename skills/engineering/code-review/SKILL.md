@@ -10,7 +10,7 @@ description: "沿两条轴线审查自某个固定点（commit、分支、tag �
 
 两条轴以**并行子代理**运行，互不污染上下文，随后由本技能汇总它们的发现。
 
-issue tracker 应当已经提供给你。如果缺少 `docs/agents/issue-tracker.md`，让用户运行 `/setup-matt-pocock-skills`。
+issue tracker 应当已经提供给你。如果缺少 `docs/agents/issue-tracker.md`，让用户运行 `/setup-skills`。
 
 ## 流程
 

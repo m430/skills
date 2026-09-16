@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 本技能取当前对话上下文和对代码库的理解，产出一份规格（spec）。不要访谈用户，只综合你已经知道的内容。
 
-issue tracker 和 triage 标签词汇表应当已经提供给你。如果没有，让用户运行 `/setup-matt-pocock-skills`。
+issue tracker 和 triage 标签词汇表应当已经提供给你。如果没有，让用户运行 `/setup-skills`。
 
 ## 流程
 

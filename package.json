@@ -1,11 +1,11 @@
 {
-  "name": "mattpocock-skills",
+  "name": "m430-skills",
   "version": "1.2.3",
   "private": true,
-  "description": "Matt Pocock's agent skills for real engineering",
+  "description": "面向真实工程实践的 AI 编程技能集（中文版）",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mattpocock/skills"
+    "url": "https://github.com/m430/skills"
   },
   "license": "MIT",
   "scripts": {

@@ -2,7 +2,7 @@
 
 各技能以五个标准 triage 角色来表达。本文件把这些角色映射到本仓库 issue tracker 实际使用的标签字符串。
 
-| mattpocock/skills 中的标签 | 我们 tracker 中的标签 | 含义                           |
+| 上游默认标签 | 我们 tracker 中的标签 | 含义                           |
 | -------------------------- | -------------------- | ------------------------------ |
 | `needs-triage`             | `needs-triage`       | 维护者需要评估此 issue         |
 | `needs-info`               | `needs-info`         | 等待报告者补充更多信息         |

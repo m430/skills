@@ -40,7 +40,7 @@ disable-model-invocation: true
 
 每个完成分诊的 issue 应当恰好带一个类别角色和一个状态角色。如果状态角色互相冲突，先标记出来并询问维护者，再做其他任何事。
 
-这些是规范的角色名。issue tracker 里实际使用的标签字符串可能不同。映射关系应当已经提供给你。如果没有，让用户运行 `/setup-matt-pocock-skills`。
+这些是规范的角色名。issue tracker 里实际使用的标签字符串可能不同。映射关系应当已经提供给你。如果没有，让用户运行 `/setup-skills`。
 
 状态流转：没有标签的 issue 通常先进入 `needs-triage`；再从那里转到 `needs-info`、`ready-for-agent`、`ready-for-human` 或 `wontfix`。报告者回复后，`needs-info` 回到 `needs-triage`。维护者可以随时覆盖流转；对看起来不寻常的流转，先标记并询问，再继续。
 

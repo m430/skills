@@ -1,10 +1,10 @@
 ---
-name: ask-matt
+name: ask-me
 description: 询问哪种技能或流程适合你的处境。一个覆盖本仓库技能的路由器。
 disable-model-invocation: true
 ---
 
-# Ask Matt
+# Ask Me
 
 你记不住每个技能，所以来问。
 
@@ -87,4 +87,4 @@ disable-model-invocation: true
 
 ## Precondition
 
-**`/setup-matt-pocock-skills`**：在第一个工程流程之前运行，配置其他技能默认依赖的 issue tracker、分诊标签和文档布局。自定义 issue tracker 也可以。
+**`/setup-skills`**：在第一个工程流程之前运行，配置其他技能默认依赖的 issue tracker、分诊标签和文档布局。自定义 issue tracker 也可以。

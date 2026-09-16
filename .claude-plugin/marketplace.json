@@ -1,22 +1,25 @@
 {
-  "name": "mattpocock",
+  "name": "m430",
   "owner": {
-    "name": "Matt Pocock",
-    "url": "https://www.aihero.dev"
+    "name": "Andy Zheng",
+    "url": "https://github.com/m430"
   },
-  "description": "Matt Pocock's skills for real engineering, as an installable Claude Code plugin.",
+  "metadata": {
+    "description": "面向真实工程实践的技能集，作为可安装的 Claude Code 插件。"
+  },
   "plugins": [
     {
-      "name": "mattpocock-skills",
+      "name": "m430-skills",
       "source": "./",
-      "description": "Matt Pocock's agent skills for real engineering (grilling, spec/ticket flows, TDD, code review, domain modelling and more).",
+      "description": "面向真实工程实践的 AI 编程技能集（拷问、规格/工单流、TDD、代码评审、领域建模等）。中文版。",
       "category": "engineering",
       "keywords": [
         "engineering",
         "skills",
         "tdd",
         "code-review",
-        "grilling"
+        "grilling",
+        "chinese"
       ]
     }
   ]

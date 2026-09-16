@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 把一份计划、规格或对话拆成一组**工单**：曳光弹（tracer bullet）式的垂直切片，每张切片声明哪些工单**阻塞**它。
 
-issue tracker 和 triage 标签词汇表应当已经提供给你。如果没有，让用户运行 `/setup-matt-pocock-skills`。
+issue tracker 和 triage 标签词汇表应当已经提供给你。如果没有，让用户运行 `/setup-skills`。
 
 ## 流程
 
@@ -57,7 +57,7 @@ issue tracker 和 triage 标签词汇表应当已经提供给你。如果没有�
 
 ### 5. 把工单发布到已配置的 tracker
 
-发布已获认可的工单。**如何发布**取决于 `/setup-matt-pocock-skills` 配置的 tracker；两种情况下工单本身相同，变化的只有阻塞边的形态：
+发布已获认可的工单。**如何发布**取决于 `/setup-skills` 配置的 tracker；两种情况下工单本身相同，变化的只有阻塞边的形态：
 
 - **本地文件** → 在 `.scratch/<feature-slug>/issues/<NN>-<slug>.md` 下为每张工单写一个文件，按依赖顺序（阻塞者在前）从 `01` 开始编号。每个文件的“阻塞于”列出它依赖的编号/标题。使用下方的每工单文件模板：一张工单一个文件，绝不要一个合并文件。
 - **真实 issue tracker（GitHub、Linear 等）** → 按依赖顺序（阻塞者在前）为每张工单发布一个 issue，使每张工单的阻塞边能引用真实标识符。平台有原生的阻塞 / 子 issue 关系就用它；否则把每张工单的“阻塞于”设为阻塞它的那些 issue。除非另有指示，打上 `ready-for-agent` triage 标签；这些工单从构造上就是可被 agent 认领的。

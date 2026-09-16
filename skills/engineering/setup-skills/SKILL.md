@@ -1,10 +1,10 @@
 ---
-name: setup-matt-pocock-skills
+name: setup-skills
 description: "为本仓库配置工程技能：设置 issue tracker、triage 标签词表和领域文档布局。在首次使用其他工程技能之前运行一次。"
 disable-model-invocation: true
 ---
 
-# 设置 Matt Pocock 技能
+# 设置技能
 
 搭建工程技能所假设的每仓库配置：
 

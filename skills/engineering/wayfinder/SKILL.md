@@ -22,7 +22,7 @@ Wayfinder 默认**只做规划**：每张工单解决一个决定，路清晰了
 
 地图是**索引**，不是存储。它列出已做的决定，并指向持有细节的工单；一个决定只活在一个地方，即它的工单里，所以地图从不复述它，只给一行摘要和链接。
 
-**地图、其子工单、阻塞关系和前沿（frontier）查询物理上放在哪里，取决于具体的 tracker。**issue tracker 应当已经提供给你。如果没有，让用户运行 `/setup-matt-pocock-skills`。查阅 tracker 文档的 “Wayfinding operations” 一节，了解*本*仓库如何表达这些操作。如果没有提供任何 tracker，默认使用 local-markdown tracker。
+**地图、其子工单、阻塞关系和前沿（frontier）查询物理上放在哪里，取决于具体的 tracker。**issue tracker 应当已经提供给你。如果没有，让用户运行 `/setup-skills`。查阅 tracker 文档的 “Wayfinding operations” 一节，了解*本*仓库如何表达这些操作。如果没有提供任何 tracker，默认使用 local-markdown tracker。
 
 ### 地图正文
 
