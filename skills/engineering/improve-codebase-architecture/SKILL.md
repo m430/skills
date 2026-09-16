@@ -57,7 +57,7 @@ disable-model-invocation: true
 
 完整的 HTML 骨架、图示模式和样式指引见 [HTML-REPORT.md](HTML-REPORT.md)。
 
-先不要提出接口。文件写完后，问用户：“这些里面你想深入探索哪一个？”
+先不要提出接口。文件写完后，问用户：“这些里面你想深入探索哪一个？”运行环境提供结构化提问工具（`AskUserQuestion`）时用它提问，把报告的**首推建议**作为推荐项放第一位；不可用时退回文本。
 
 ### 3. 拷问（grilling）循环
 
