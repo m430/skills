@@ -1,4 +1,4 @@
-# DBB Skills
+# m430 Skills
 
 面向真实工程实践的 AI 编程技能集（中文版）。fork 自 [mattpocock/skills](https://github.com/mattpocock/skills)（MIT），全部技能文档已译成中文并按自身需要独立维护。
 
