@@ -73,7 +73,7 @@ disable-model-invocation: true
 
 3. **验证主张。**在拷问之前，先检查主张是否站得住。对 bug，按报告者的步骤复现它。对 PR，确认 diff 做了它声称的事：checkout 出来，跑相关的测试或命令。报告结果：已确认（附代码路径）、失败，或细节不足（`needs-info` 的强烈信号）。一次已确认的验证能让代理简报强得多。
 
-4. **拷问（grilling，如有需要）。**如果请求需要充实，调用两次 Skill 工具，传入 “grilling” 和 “domain-modeling”，一轮一轮提问把它拷问成形，锤炼领域术语，并在决策落定时顺手更新 `CONTEXT.md` 和 ADR。
+4. **拷问（grilling，如有需要）。**如果请求需要充实，调用两次 Skill 工具，传入 “grilling” 和 “domain-modeling”，一次一个问题地把它拷问成形，锤炼领域术语，并在决策落定时顺手更新 `CONTEXT.md` 和 ADR。
 
 5. **落实结果：**
    - `ready-for-agent`：发一条代理简报评论（[AGENT-BRIEF.md](AGENT-BRIEF.md)）。

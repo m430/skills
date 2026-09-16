@@ -5,7 +5,7 @@ disable-model-invocation: true
 argument-hint: "A workflow to design, or nothing to go find one"
 ---
 
-运行一次有状态的 `/grilling` 会话，其唯一产出是**工作流（workflow）**的规格。把拷问纪律（紧追不舍、一次一轮问题、每个问题都附上推荐答案）对准下方的词汇表和目标。随着拷问把事情谈清楚，相应地创建、编辑和删除规格。
+运行一次有状态的 `/grilling` 会话，其唯一产出是**工作流（workflow）**的规格。把拷问纪律（紧追不舍、一次一个问题、每个问题都附上推荐答案）对准下方的词汇表和目标。随着拷问把事情谈清楚，相应地创建、编辑和删除规格。
 
 ## 循环透镜（loop lens）
 

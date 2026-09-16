@@ -75,7 +75,7 @@ disable-model-invocation: true
 完全游离于主流程之外。
 
 - **`/grill-me`**：与 `/grill-with-docs` 相同的不留情面的访谈，但**无状态**：本地什么也不保存，也不构建 `CONTEXT.md`。当你**不在工作目录里干活**时用它（磨锐利一个计划、一份设计、一篇文字，任何底下没有仓库的东西）。如果你在工作目录里，改用 `/grill-with-docs`：它跑同样的访谈还留下书面记录，严格来说是更好的那个。
-- **`/grilling`** 是访谈原语本身：一轮又一轮、前沿（frontier）、事实归代理管、决定归你管。`/grill-me` 和 `/grill-with-docs` 是进入它的两个具名入口，`/triage`、`/wayfinder` 和 `/improve-codebase-architecture` 都在内部运行它。只有当你想要一场没有任何包装的访谈时才直接调用它。
+- **`/grilling`** 是访谈原语本身：一次一个问题、前沿（frontier）、事实归代理管、决定归你管。`/grill-me` 和 `/grill-with-docs` 是进入它的两个具名入口，`/triage`、`/wayfinder` 和 `/improve-codebase-architecture` 都在内部运行它。只有当你想要一场没有任何包装的访谈时才直接调用它。
 - **`/resolving-merge-conflicts`** 逐个 hunk 地处理进行中的 merge 或 rebase 冲突，按**意图**解决，每个决定追溯到两侧各自的一手来源，而不是靠挑哪几行，然后完成整个操作。它从不运行 `--abort`。独立于所有流程之外：当你已经身处冲突之中时调用它。
 - **`/prototype`** 是一个一次性的小程序，回答一个设计问题：这个状态模型手感对不对，或这个 UI 该长什么样。一次性是对代码写法的约束，不是销毁它的承诺：答案折叠进真正的代码，原型本身则作为**一手来源**保存在 main 之外的一条 `prototype/<name>` 分支上，由实现 issue 指向它。它是主流程第 2 步里的那次绕道，但任何设计问题在纸面上难以落定时都可以调用它。
 - **`/research`**：把阅读跑腿的活委托给**后台代理（background agent）**：它对着**一手来源**调查一个问题，然后在仓库里留下一份带引用的 Markdown 文件。它读的时候你继续干活。它产出的文件是要*带进*主流程、拿到 `/grill-with-docs` 用的，因为调研喂养思考，而不是取代思考。
