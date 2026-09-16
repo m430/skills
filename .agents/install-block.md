@@ -44,7 +44,7 @@ npx skills@latest update <name>
 scripts/link-skills.sh
 ```
 
-Links every skill outside `deprecated/` and `misc/` into `~/.claude/skills` and `~/.agents/skills` as symlinks into this checkout, so a `git pull` keeps installed skills current.
+Links every skill outside `misc/` into `~/.claude/skills` and `~/.agents/skills` as symlinks into this checkout, so a `git pull` keeps installed skills current.
 
 ## The two install routes are exclusive
 
