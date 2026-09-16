@@ -1,15 +1,15 @@
 ---
 name: implement
-description: "Implement a piece of work based on a spec or set of tickets."
+description: "基于一份规格（spec）或一组工单实现一项工作。"
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the spec or tickets.
+实现用户在规格或工单中描述的工作。
 
-Use /tdd where possible, at pre-agreed seams.
+在预先约定的接缝（seam）上，尽可能使用 /tdd。
 
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+定期运行类型检查，定期运行单个测试文件，最后完整跑一次测试套件。
 
-Once done, use /code-review to review the work.
+完成后，使用 /code-review 审查这项工作。
 
-Commit your work to the current branch.
+把你的工作提交到当前分支。

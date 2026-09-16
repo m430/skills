@@ -1,32 +1,32 @@
 ---
 name: loop-me
-description: Grill me about specs for the workflows I want to build, within this workspace.
+description: 就我想构建的工作流的规格（spec）拷问（grilling）我，范围限于本工作区。
 disable-model-invocation: true
 argument-hint: "A workflow to design, or nothing to go find one"
 ---
 
-Run a stateful `/grilling` session whose only output is **workflow** specs. Use the grilling discipline (relentless, a round of questions at a time, a recommended answer attached to each) aimed at the vocabulary and goal below. Create, edit, and delete specs as the grilling resolves things.
+运行一次有状态的 `/grilling` 会话，其唯一产出是**工作流（workflow）**的规格。把拷问纪律（紧追不舍、一次一轮问题、每个问题都附上推荐答案）对准下方的词汇表和目标。随着拷问把事情谈清楚，相应地创建、编辑和删除规格。
 
-## The loop lens
+## 循环透镜（loop lens）
 
-A **loop** is a recurring pattern in the user's life: their career, their week, their morning, a single repeated activity. Picturing a life as loops within loops reveals how predictable its activities really are, which is what makes them worth **delegating**. Use the lens to find loops worth specifying, and propose ones the user hasn't noticed.
+**循环（loop）**是用户生活中反复出现的模式：他们的职业、他们的一周、他们的清晨、某项单一的重复活动。把生活看成循环套循环，会揭示出这些活动实际上有多可预测，而这正是它们值得**委托**出去的原因。用这个透镜找出值得写成规格的循环，并主动提出用户没有注意到的循环。
 
-A **workflow** is the spec of one loop, made real. You run a workflow on a loop: the loop is its running instantiation. Workflows live in `workflows/*.md` and are the source of truth.
+**工作流**是某个循环的规格落地后的形态。你在循环上运行工作流：循环就是它运行中的实例。工作流存放在 `workflows/*.md` 中，是唯一事实来源。
 
-## Vocabulary
+## 词汇表
 
-A shared language, reached for only when a workflow calls for it: never a checklist. **Mandate nothing structural**: a workflow needs no AI, no checkpoint, and no schedule unless the grilling shows it does.
+一套共享语言，只在某个工作流需要时才动用：绝不当清单用。**不强加任何结构性要求**：工作流不需要 AI、不需要检查点（checkpoint）、也不需要日程，除非拷问表明它需要。
 
-- **Trigger**: what fires each run, an **event** (a new email, a new issue) or a **schedule** (every morning). Event-triggering is usually the more efficient.
-- **Checkpoint**: a human-in-the-loop point where the user is asked to verify or decide. Some workflows have none and run autonomously; some use no AI at all.
-- **Push right**: defer the checkpoint as far as it will go. Do maximal work before involving the human, so they are asked once, late, with everything prepared.
-- **Brief**: what a checkpoint presents, a tight, decision-ready summary (what was produced, why, and a link down to the asset itself), never the raw output. The user reads a brief, not a draft. Speed of review is imperative.
+- **触发器（trigger）**：每次运行由什么引发，是一个**事件**（一封新邮件、一个新 issue）还是一个**日程**（每天早晨）。事件触发通常更高效。
+- **检查点**：一个需要用户验证或决策的人工介入点。有些工作流完全没有检查点、自主运行；有些则完全不用 AI。
+- **尽量右移（push right）**：把检查点推迟到它能推到的最远处。在让人介入之前先做完最多的工作，让人只被问一次、在很晚的时候、且一切已准备就绪。
+- **简报（brief）**：检查点所呈现的内容，一份紧凑、读完即可据以决策的摘要（产出了什么、为什么，以及一条直达产出物本身的链接），绝不是原始输出。用户读的是简报，不是草稿。审阅速度是硬性要求。
 
-## Definition of done
+## 完成的定义
 
-A workflow spec is done when an implementer agent could build it without asking a single question. Grill until then; nothing is done while a question remains.
+当实现者代理能够一个问题都不问就把它构建出来时，工作流规格才算完成。在那之前一直拷问；只要还剩一个问题，就没有任何东西算完成。
 
-## The workspace
+## 工作区
 
-- `workflows/*.md`: one spec per workflow.
-- `NOTES.md`: raw notes on the user's world, the tools they use, the channels they process, and their own terminology for both. When it is empty or thin, interview them about their world before specifying anything. Sharpen fuzzy terms into canonical ones as they surface, and record them here.
+- `workflows/*.md`：每个工作流一份规格。
+- `NOTES.md`：关于用户世界的原始笔记：他们使用的工具、他们处理的渠道，以及他们自己给这两者起的术语。当它为空或内容单薄时，先就他们的世界做访谈，再写任何规格。随着模糊术语浮现，把它们打磨成规范术语，并记录在这里。

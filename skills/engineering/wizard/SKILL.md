@@ -1,44 +1,44 @@
 ---
 name: wizard
-description: Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.
+description: 生成一个交互式 bash 向导（wizard），带领人类完成只有人类才能执行的步骤。在开通基础设施、设置凭据或 CI secrets、摸索不熟悉的第三方控制台，或运行一次性迁移或切换时使用。agent 自己能执行的步骤不要调用本技能。
 ---
 
-# Wizard
+# 向导（wizard）
 
-A **wizard** is a bash script that walks a human, step by step, through a manual procedure that's tedious to do by hand and tedious to re-explain to an AI every time. It opens each URL, says exactly what to click and copy, captures the values, writes them where they belong (`.env`, GitHub secrets), confirms at every stage, and shows how many stages are left. It might configure third-party services, run a one-off migration, or move the project from one state to another.
+**向导**是一个 bash 脚本，它一步步带领人类走完一项手工做起来繁琐、每次重新向 AI 解释也很繁琐的手动流程。它打开每个 URL，准确说明该点什么、复制什么，捕获那些值，把它们写到该写的地方（`.env`、GitHub secrets），在每个阶段都进行确认，并显示还剩多少个阶段。它可能用来配置第三方服务、运行一次性迁移，或把项目从一种状态搬到另一种状态。
 
-The delightful UX is already solved by [template.sh](template.sh): stage-by-stage progress, confirmation gates, cross-platform URL opening (including WSL), hidden secret entry, idempotent `.env` upserts, `gh secret`/`gh variable` writes, and a closing summary. **Your job is only to scope the procedure and author its stages.** The library above the `STAGES` marker is identical in every wizard; that consistency is the point: never hand-edit it.
+令人愉悦的 UX 已经由 [template.sh](template.sh) 解决：逐阶段的进度、确认关卡、跨平台的 URL 打开（包括 WSL）、机密的隐藏式输入、幂等的 `.env` upsert、`gh secret`/`gh variable` 写入，以及收尾总结。**你的职责只是划定流程的范围并编写它的各个阶段。**`STAGES` 标记之上的库在每个向导里都完全相同；这种一致性正是意义所在：绝不要手工编辑它。
 
-A wizard is ephemeral by default: built for one run, saved to a scratch or `scripts/` path, deleted when the job's done. Commit it only when the user wants a repeatable setup path that should live in the repo.
+向导默认是临时的：为一次运行而建，保存到某个 scratch 或 `scripts/` 路径，活干完就删。只有当用户想要一条应当留在仓库里的可重复 setup 路径时，才提交它。
 
-## Process
+## 流程
 
-### 1. Scope the procedure
+### 1. 划定流程范围
 
-Work out every manual step the human must take and every value that gets captured along the way. Read the repo first, don't ask cold:
+弄清人类必须执行的每个手动步骤，以及过程中会捕获的每个值。先读仓库，不要一上来就问：
 
-- For setup: `.env`, `.env.example`, `.env.*`, `README`, `docker-compose*`, framework config, and `.github/workflows/*` (every `secrets.*` / `vars.*` reference is a value the wizard must produce).
-- For a migration or transition: the current state, the target state, and the irreversible actions between them.
+- 针对 setup：`.env`、`.env.example`、`.env.*`、`README`、`docker-compose*`、框架配置，以及 `.github/workflows/*`（每个 `secrets.*` / `vars.*` 引用都是向导必须产出的一个值）。
+- 针对迁移或状态转换：当前状态、目标状态，以及两者之间的不可逆操作。
 
-Then show the user the ordered list of stages and the values each produces, and confirm: they may add, drop, or reorder.
+然后把有序的阶段列表和每个阶段产出的值展示给用户，并加以确认：用户可以增加、删除或重排。
 
-**Done when:** every stage is named in order, and for each captured value you know (a) where the human gets it, (b) where it's written (`.env`, a GitHub secret, both, or nowhere; some stages are pure actions), and (c) whether it's secret (hidden entry) or public.
+**完成标志：**每个阶段都按顺序命名，且对每个捕获的值你都知道 (a) 人类从哪里拿到它，(b) 它被写到哪里（`.env`、GitHub secret、两者都写，或者不写；有些阶段是纯操作），以及 (c) 它是机密（隐藏输入）还是公开的。
 
-### 2. Map each stage's journey
+### 2. 规划每个阶段的路径
 
-For each stage, write the precise path a human follows: which URL to open, what to do there, where a value is shown, which variable it fills: e.g. "Dashboard → Developers → API keys → Reveal test key → copy". Where you don't actually know the current UI or the exact command, say so and ask the user or check the docs: never invent steps that may not exist.
+对每个阶段，写出人类要走的精确路径：打开哪个 URL、在那里做什么、值显示在哪里、填入哪个变量：例如 “Dashboard → Developers → API keys → Reveal test key → copy”。遇到你并不真正了解当前 UI 或确切命令的地方，如实说明并询问用户或查阅文档：绝不编造可能不存在的步骤。
 
-**Done when:** every stage traces to concrete instructions a stranger could follow.
+**完成标志：**每个阶段都能追溯到陌生人也能照着做的具体指示。
 
-### 3. Author the wizard
+### 3. 编写向导
 
-Copy `template.sh` to the target path. Replace the example stage with one `stage` per step, in dependency order. Use the library helpers: `stage`, `say`/`step`, `open_url`, `ask`/`ask_secret`, `write_env`, `set_secret`/`set_var`, `pause`/`confirm`. Set `TOTAL_STAGES` to the number of stages you wrote.
+把 `template.sh` 复制到目标路径。把示例阶段替换为每步一个 `stage`，按依赖顺序排列。使用库的辅助函数：`stage`、`say`/`step`、`open_url`、`ask`/`ask_secret`、`write_env`、`set_secret`/`set_var`、`pause`/`confirm`。把 `TOTAL_STAGES` 设为你所写阶段的数量。
 
-Hold the bar the template sets: open the URL before asking for its value, use `ask_secret` for anything secret, `write_env` every persisted value, `set_secret` only the values CI actually needs, and `confirm` before any irreversible action. Each `stage` clears the screen so only the current step is visible: keep a stage to one focused task so nothing the human needs scrolls away. Don't touch the library above the marker.
+守住模板立下的标准：先打开 URL 再索要它的值；机密一律用 `ask_secret`；每个持久化的值都 `write_env`；只对 CI 真正需要的值 `set_secret`；任何不可逆操作之前先 `confirm`。每个 `stage` 都会清屏，只让当前步骤可见：把一个阶段限制在一项聚焦的任务上，人类需要的东西就不会滚出屏幕。不要碰标记之上的库。
 
-### 4. Verify and hand off
+### 4. 验证并交接
 
-- `bash -n <script>`; run `shellcheck` if available.
-- `chmod +x <script>`.
-- Don't run it end-to-end yourself: it opens browsers and blocks on human input. Trace it statically instead: every value from step 1 is captured and lands where step 1 said, and every `set_secret` name exactly matches a `secrets.*` reference in CI.
-- Tell the user how to run it. If it's a repeatable setup path, commit it and link it from the README so the next person runs the script instead of asking an AI.
+- `bash -n <script>`；如果可用，运行 `shellcheck`。
+- `chmod +x <script>`。
+- 不要自己端到端运行它：它会打开浏览器，并阻塞等待人类输入。改为静态走查：第 1 步的每个值都被捕获、落到第 1 步所说的位置，且每个 `set_secret` 名称都与 CI 中的某个 `secrets.*` 引用精确匹配。
+- 告诉用户如何运行它。如果它是一条可重复的 setup 路径，提交它并从 README 链接过去，让下一个人运行脚本，而不是来问 AI。

@@ -1,30 +1,30 @@
-# Issue tracker: Local Markdown
+# Issue tracker：本地 markdown
 
-Issues and specs for this repo live as markdown files in `.scratch/`.
+本仓库的 issue 和规格（spec）以 markdown 文件形式存放在 `.scratch/` 中。
 
-## Conventions
+## 约定
 
-- One feature per directory: `.scratch/<feature-slug>/`
-- The spec is `.scratch/<feature-slug>/spec.md`
-- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, never a single combined tickets file
-- Triage state is recorded as a `Status:` line near the top of each issue file (see `triage-labels.md` for the role strings)
-- Comments and conversation history append to the bottom of the file under a `## Comments` heading
+- 每个功能一个目录：`.scratch/<feature-slug>/`
+- 规格是 `.scratch/<feature-slug>/spec.md`
+- 实现 issue 每个工单一个文件，位于 `.scratch/<feature-slug>/issues/<NN>-<slug>.md`，从 `01` 开始编号，绝不用单个合并的工单文件
+- triage 状态记录在每个 issue 文件顶部附近的 `Status:` 行中（角色字符串见 `triage-labels.md`）
+- 评论和对话历史追加到文件底部 `## Comments` 标题之下
 
-## When a skill says "publish to the issue tracker"
+## 当技能说 "publish to the issue tracker" 时
 
-Create a new file under `.scratch/<feature-slug>/` (creating the directory if needed).
+在 `.scratch/<feature-slug>/` 下创建新文件（必要时创建目录）。
 
-## When a skill says "fetch the relevant ticket"
+## 当技能说 "fetch the relevant ticket" 时
 
-Read the file at the referenced path. The user will normally pass the path or the issue number directly.
+读取引用路径处的文件。用户通常会把路径或 issue 编号直接传给你。
 
-## Wayfinding operations
+## Wayfinding 操作
 
-Used by `/wayfinder`. The **map** is a file with one **child** file per ticket.
+由 `/wayfinder` 使用。**map** 是一个文件，每个工单对应一个**子（child）**文件。
 
-- **Map**: `.scratch/<effort>/map.md` (the Notes / Decisions-so-far / Fog body).
-- **Child ticket**: `.scratch/<effort>/issues/NN-<slug>.md`, numbered from `01`, with the question in the body. A `Type:` line records the ticket type (`research`/`prototype`/`grilling`/`task`); a `Status:` line records `claimed`/`resolved`.
-- **Blocking**: a `Blocked by: NN, NN` line near the top. A ticket is unblocked when every file it lists is `resolved`.
-- **Frontier**: scan `.scratch/<effort>/issues/` for files that are open, unblocked, and unclaimed; first by number wins.
-- **Claim**: set `Status: claimed` and save before any work.
-- **Resolve**: append the answer under an `## Answer` heading, set `Status: resolved`, then append a context pointer (gist + link) to the map's Decisions-so-far in `map.md`.
+- **Map**：`.scratch/<effort>/map.md`（正文承载 Notes / Decisions-so-far / Fog）。
+- **子工单**：`.scratch/<effort>/issues/NN-<slug>.md`，从 `01` 开始编号，正文中写明问题。`Type:` 行记录工单类型（`research`/`prototype`/`grilling`/`task`）；`Status:` 行记录 `claimed`/`resolved`。
+- **阻塞**：顶部附近的 `Blocked by: NN, NN` 行。当它列出的每个文件都是 `resolved` 时，工单解除阻塞。
+- **边界（frontier）**：扫描 `.scratch/<effort>/issues/`，找出打开、未阻塞且未被认领的文件；编号最小者胜出。
+- **认领**：先设为 `Status: claimed` 并保存，然后才能开始任何工作。
+- **解决**：在 `## Answer` 标题下追加答案，设为 `Status: resolved`，再把上下文指针（gist + 链接）追加到 `map.md` 中 map 的 Decisions-so-far。

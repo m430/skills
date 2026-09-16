@@ -1,45 +1,45 @@
 ---
 name: writing-fragments
-description: "Writing, explore: mine raw fragments, no structure yet."
+description: "写作的探索（explore）：开采原始碎片（fragment），尚不涉及结构。"
 disable-model-invocation: true
 ---
 
 <what-to-do>
 
-This is pure **explore**: widen the space of what could be written without committing to structure. Committing is _exploit_, a separate skill's job. Run a grilling session that produces fragments, interviewing the user relentlessly about whatever they want to write about. Imposing phases, outlines, or article structure is out of scope here.
+这是纯粹的**探索（explore）**：拓宽"可以写什么"的空间，而不承诺任何结构。承诺结构属于 _利用（exploit）_，那是另一个技能的职责。运行一场产出碎片的拷问（grilling）会话，围绕用户想写的任何东西紧追不舍地访谈他们。强加阶段、大纲或文章结构在这里属于越界。
 
-As fragments emerge from either side of the conversation, append them to a single markdown file.
+碎片从对话的任何一侧冒出来时，就把它追加到一个单独的 markdown 文件里。
 
-If the user did not pass a path, ask once where to save the document, then remember it for the rest of the session.
+如果用户没有传入路径，问一次文档存到哪里，然后在本次会话的剩余时间里记住它。
 
-Capture fragments from the very first thing the user says, including the initial prompt.
+从用户说的第一句话就开始捕捉碎片，包括最初的提示词。
 
-On first write, put a single H1 at the top with a working title (it can change later) and nothing else: no metadata, no TOC, no date.
+首次写入时，在顶部放一个单独的 H1，带一个工作标题（之后可以改），除此之外什么都不放：没有 metadata、没有 TOC、没有日期。
 
 </what-to-do>
 
 <supporting-info>
 
-## What is a fragment
+## 什么是碎片
 
-A fragment is any piece of text that might survive into the final article. It must be _readable by the author_ (the author can tell what it means), but it does not need to define its terms or be comprehensible to a cold reader. The bar is "is this a piece of good writing?", not "is this a self-contained argument?"
+碎片是任何可能存活到最终文章里的文字。它必须 _作者本人读得懂_（作者能看出它是什么意思），但不需要定义自己的术语，也不需要让一个对背景一无所知的读者看懂。标准是"这是不是一段好文字？"，而不是"这是不是一个自足的论证？"
 
-Fragments are deliberately heterogeneous. Examples of what could be a fragment:
+碎片刻意保持异质。什么可以成为碎片的例子：
 
-- A sharp sentence you'd want to deploy somewhere but don't yet know where.
-- A claim with a one-line justification.
-- A vignette: a thing that happened, a code snippet, a scenario, an analogy.
-- A half-thought: "something about how X feels like Y, work this out later."
-- A quote, a piece of dialogue, an overheard line.
-- A list of related observations that hang together by feel.
-- A complaint, a confession, a punchline.
-- A **leading word**: a compact metaphor or coinage the whole piece can hang on (one term that names the idea, the way _tracer bullets_ or _fog of war_ names a whole pattern).
+- 一句锋利的话，你想在某个地方用上它，但还不知道用在哪。
+- 一个论断，配一行理由。
+- 一个小场景（vignette）：发生过的一件事、一段代码、一个情境、一个类比。
+- 半个想法："大概是关于 X 感觉像 Y 的什么东西，之后再想清楚。"
+- 一条引文、一段对话、一句无意中听到的话。
+- 一串相关观察，凭感觉凑在一起。
+- 一句抱怨、一段自白、一个笑点。
+- 一个**领先词（leading word）**：一个紧凑的隐喻或新造词，整篇文章可以挂在它上面（一个为那个想法命名的术语，就像 _曳光弹（tracer bullet）_ 或 _战争迷雾_ 命名了整个模式）。
 
-Of these, the leading word is the most valuable fragment to land. It is load-bearing: name the right one in explore and it shapes the structure, the transitions, and the title later, paying dividends through the entire exploit phase. When the conversation circles a recurring idea, push to coin a word for it.
+其中，领先词是最值得拿下的碎片。它是承重的：在探索阶段就为它起对名字，它之后会塑造结构、过渡和标题，在整个利用阶段持续产生红利。当对话围绕一个反复出现的想法打转时，推动为它造一个词。
 
-The novelist's diary is the model: years of unstructured noticings that later get mined for raw material. Fragments are noticings.
+小说家的日记就是范本：多年不设结构的随手觉察，日后被开采为原材料。碎片就是随手觉察。
 
-## File format
+## 文件格式
 
 ```markdown
 # Working title
@@ -66,14 +66,14 @@ A reaction to it.
 - And want to be near each other
 ```
 
-Fragments are separated by a horizontal rule (`\n---\n`). No headings inside the body. No tags. No order beyond the order they were added.
+碎片之间用水平分隔线（`\n---\n`）分隔。正文里不用标题。不用标签。除了添加顺序之外没有其他顺序。
 
-## Writing rhythm
+## 写作节奏
 
-Append silently. Don't ask permission for each fragment. Mention what you added in passing ("adding that"), but don't interrupt the conversation with save dialogs.
+默默追加。不要为每个碎片请求许可。顺带提一句你加了什么（"加上那条"），但不要用保存对话框打断对话。
 
-Before every write: re-read the file from disk. The user may have edited, reordered, or deleted fragments between turns, so preserve their changes. Never overwrite the file; only append (or, if the user asks, edit a specific fragment in place).
+每次写入前：从磁盘重新读取文件。用户可能在上个回合之间编辑、重排或删除了碎片，所以要保留他们的改动。绝不覆盖文件；只做追加（或者，如果用户要求，原地编辑某个特定碎片）。
 
-The user can say "cut the last one", "rewrite that one sharper", "merge those two" at any time. Treat those as first-class instructions.
+用户随时可以说"删掉最后一条"、"把那条改得更犀利"、"把那两条合并"。把这些当作一等指令对待。
 
 </supporting-info>
