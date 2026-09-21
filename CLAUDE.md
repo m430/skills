@@ -19,8 +19,6 @@ Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `
 
 When a skill asks the user to make a decision, it uses the harness's structured question tool (`AskUserQuestion`) whenever one is available: one question at a time, with candidate answers as options and the recommended one first. Fall back to plain-text questions when no such tool exists. See [grilling](./skills/productivity/grilling/SKILL.md) for the pattern.
 
-[`ask-me`](./skills/engineering/ask-me/SKILL.md) is the router that maps every user-reachable skill and how they relate. Whenever you add, rename, remove, or change how a user-reachable skill fits the flows, re-read `ask-me`'s `SKILL.md` and update it so the map stays accurate: a new skill it never mentions, or a stale one it still routes to, is a router that lies.
-
 To (re)link every skill outside `misc/` into the local harness skill directories (`~/.claude/skills`, `~/.agents/skills`), run `scripts/link-skills.sh`. Each entry is a symlink into this repo, so a `git pull` keeps installed skills current; re-run the script after adding, removing, or renaming a skill.
 
 No em-dashes anywhere in this repo's prose (`SKILL.md` files, `README.md`, `CHANGELOG.md`, ADRs, changesets, code comments). Where a sentence reaches for one, rewrite it instead with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants; never do a blind character substitution.

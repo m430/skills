@@ -1,0 +1,5 @@
+interface:
+  display_name: "Plan Sprint"
+  short_description: "Break the sprint goal into story files"
+policy:
+  allow_implicit_invocation: false

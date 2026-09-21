@@ -1,0 +1,5 @@
+interface:
+  display_name: "Close Sprint"
+  short_description: "Assess the sprint and close it"
+policy:
+  allow_implicit_invocation: false

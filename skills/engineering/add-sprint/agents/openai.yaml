@@ -1,0 +1,5 @@
+interface:
+  display_name: "Add Sprint"
+  short_description: "Open a new sprint with a goal"
+policy:
+  allow_implicit_invocation: false

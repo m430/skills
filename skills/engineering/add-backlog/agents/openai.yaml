@@ -1,0 +1,5 @@
+interface:
+  display_name: "Add Backlog"
+  short_description: "Record an idea as a backlog requirement"
+policy:
+  allow_implicit_invocation: false

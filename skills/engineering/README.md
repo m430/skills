@@ -6,13 +6,17 @@ Skills I use daily for code work.
 
 Reachable only when you type them (Claude Code: `disable-model-invocation: true`; Codex: `policy.allow_implicit_invocation: false` in `agents/openai.yaml`).
 
-- **[ask-me](./ask-me/SKILL.md)**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[grill-with-docs](./grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
-- **[triage](./triage/SKILL.md)**: Move issues through a state machine of triage roles.
+- **[add-backlog](./add-backlog/SKILL.md)**: Record an idea from the conversation as an unnumbered backlog requirement under `sprints/backlog/`, waiting to be planned into a sprint.
+- **[add-sprint](./add-sprint/SKILL.md)**: Open a new sprint: confirm the previous one is closed, ask for the iteration goal, then scaffold `sprints/sprint-NN/` and its `SPRINT.md`.
+- **[plan-sprint](./plan-sprint/SKILL.md)**: Recommend backlog requirements that fit the sprint goal, break it into a story list you confirm, then write one numbered story file per story.
+- **[add-story](./add-story/SKILL.md)**: Add a story to the current sprint and update `SPRINT.md`.
+- **[delete-story](./delete-story/SKILL.md)**: Remove a story from the current sprint, cleaning up `SPRINT.md` and any blocking edges that point at it.
+- **[implement-story](./implement-story/SKILL.md)**: Build the work one story file describes, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing, then update the story's status.
+- **[close-sprint](./close-sprint/SKILL.md)**: Assess the sprint's completion into `SPRINT.md` and close it, deciding where each unfinished story goes.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-skills](./setup-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo.
-- **[to-spec](./to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker.
-- **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, whether as text in a local file or as native blocking links on a real tracker.
+- **[setup-skills](./setup-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, domain doc layout). Run once per repo.
+- **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of vertical-slice tickets, each declaring its blocking edges, whether as text in a local file or as native blocking links on a real tracker.
 - **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Delete Story"
+  short_description: "Remove a story from the current sprint"
+policy:
+  allow_implicit_invocation: false
