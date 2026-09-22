@@ -76,7 +76,7 @@ flowchart LR
 
 ### 阶段 0 · 准备（每仓库一次）
 
-技能：[setup-skills](./skills/engineering/setup-skills/SKILL.md)、[design-from-image](./skills/engineering/design-from-image/SKILL.md)
+技能：[setup-skills](./skills/engineering/setup-skills/SKILL.md)、[design-from-image](./skills/design/design-from-image/SKILL.md)
 
 ```mermaid
 flowchart LR
@@ -118,7 +118,7 @@ flowchart LR
 
 ### 阶段 2 · 设计（回答纸面回答不了的问题）
 
-技能：[prototype](./skills/engineering/prototype/SKILL.md)、[codebase-design](./skills/engineering/codebase-design/SKILL.md)
+技能：[prototype](./skills/design/prototype/SKILL.md)、[codebase-design](./skills/engineering/codebase-design/SKILL.md)
 
 ```mermaid
 flowchart LR
@@ -218,6 +218,18 @@ flowchart LR
 
 按"谁能调用"分两类。**User-invoked** 只能由你输入斜杠命令触发，负责编排流程；**Model-invoked** 可被你调用，也可由代理在任务匹配时自动触发，承载可复用的纪律。User-invoked 技能可以调用 Model-invoked 技能，反之不行。
 
+### Design
+
+界面与设计系统相关的工作。
+
+**User-invoked**
+
+- **[design-from-image](./skills/design/design-from-image/SKILL.md)**: 从一张设计参考图提取项目级设计系统，写出仓库根目录的 `design.md`（配色按角色、排版、间距、形状与深度、组件规范，每条标注观察到 / 裁定 / 推断），并在 `Agent skills` 块里登记，供后续 UI 工作遵循。有 UI 的仓库运行一次。
+
+**Model-invoked**
+
+- **[prototype](./skills/design/prototype/SKILL.md)**: 构建一次性原型回答设计问题：状态/逻辑问题用单个可分享 HTML 文件，UI 问题用一条路由可切换的多个差异巨大的变体。
+
 ### Engineering
 
 日常代码工作使用。
@@ -234,11 +246,9 @@ flowchart LR
 - **[close-sprint](./skills/engineering/close-sprint/SKILL.md)**: 评估迭代完成情况并写入 `SPRINT.md`，关闭迭代；未完成的 story 逐条定好去向。
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: 扫描代码库寻找深化机会，以可视化 HTML 报告呈现，选定后进入拷问循环。
 - **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（迭代工作区约定、领域文档布局，有 UI 的仓库还登记设计系统）。使用其他工程技能前每仓库运行一次。
-- **[design-from-image](./skills/engineering/design-from-image/SKILL.md)**: 从一张设计参考图提取项目级设计系统，写出仓库根目录的 `design.md`（配色按角色、排版、间距、形状与深度、组件规范，每条标注观察到 / 裁定 / 推断），并在 `Agent skills` 块里登记，供后续 UI 工作遵循。有 UI 的仓库运行一次。
 
 **Model-invoked**
 
-- **[prototype](./skills/engineering/prototype/SKILL.md)**: 构建一次性原型回答设计问题：状态/逻辑问题用单个可分享 HTML 文件，UI 问题用一条路由可切换的多个差异巨大的变体。
 - **[fix-bug](./skills/engineering/fix-bug/SKILL.md)**: 硬 bug 与性能回归的纪律化诊断环：建一条对该 bug 变红的反馈环，最小化，列假设，插桩，修复，回归测试；有进行中的迭代时把 bug 记进 `sprints/sprint-NN/`，迭代里能同时看到需求和 bug。
 - **[research](./skills/engineering/research/SKILL.md)**: 以后台代理按高可信一手来源调研问题，把结论沉淀为仓库中带引用的 Markdown 文件。
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: 测试驱动开发，red-green-refactor 循环，一次一个垂直切片地构建功能或修复 bug。

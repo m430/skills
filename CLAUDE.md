@@ -1,10 +1,11 @@
 Skills are organized into bucket folders under `skills/`:
 
+- `design/`: interface and design-system work
 - `engineering/`: daily code work
 - `productivity/`: daily non-code workflow tools
 - `misc/`: kept around but rarely used, not promoted
 
-Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`'s `skills` array (the Claude Code plugin ships exactly the promoted set). Skills in `misc/` must not appear in either.
+Every skill in `design/`, `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`'s `skills` array (the Claude Code plugin ships exactly the promoted set). Skills in `misc/` must not appear in either.
 
 Install commands are copied verbatim from [.agents/install-block.md](./.agents/install-block.md). `.claude-plugin/marketplace.json` makes the repo its own single-plugin marketplace (a fallback the install block explains, not the documented route). Run `claude plugin validate . --strict` after touching either manifest. Why a Claude plugin but not (yet) a Codex one lives in [.agents/adr/0002-ship-as-a-claude-code-plugin.md](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
 
@@ -12,7 +13,7 @@ Each skill entry in the top-level `README.md` must link the skill name to its `S
 
 Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`. The promoted buckets' `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**; the non-promoted bucket's `README.md` (`misc/`) uses a flat list.
 
-Skills in `engineering/` and `productivity/` are documented by their own `SKILL.md` files; this repo keeps no separate human-facing docs tree.
+Skills in the promoted buckets are documented by their own `SKILL.md` files; this repo keeps no separate human-facing docs tree.
 
 Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, reachable only by the human) or model-invoked (model- or user-reachable). See [.agents/invocation.md](./.agents/invocation.md).
 
