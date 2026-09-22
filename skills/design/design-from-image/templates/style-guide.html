@@ -82,6 +82,9 @@
   /* 棋盘格画在 .swatch 这层，色块作为子元素压在它上面：
      颜色不透明就完全盖住，半透明才透出格子。反过来会把不透明的色也变成格子。 */
   .swatch {
+    /* 竖向排布并让 .info 撑满剩余高度：格子行里各个 .swatch 等高，
+       没有这一手，信息栏下面的空白会露出棋盘格，看着像色块是半透明的 */
+    display: flex; flex-direction: column;
     border: 1px solid #ddd;
     background-color: #fff;
     background-image:
@@ -94,7 +97,7 @@
   }
   /* 类名刻意不叫 .chip：会和下面的 Badge 撞名，把圆角与 background 简写带进来 */
   .swatch .fill { height: 72px; }
-  .swatch .info { padding: 8px 10px; font-size: 12px; border-top: 1px solid #ddd; background-color: #fff; }
+  .swatch .info { flex: 1; padding: 8px 10px; font-size: 12px; border-top: 1px solid #ddd; background-color: #fff; }
   .swatch .tok { font-weight: 600; }
   .swatch .use { color: #888; }
 
