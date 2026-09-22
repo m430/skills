@@ -6,40 +6,38 @@
 <!--
   一次性核对页。用法：
 
-  1. 替换下面 :root 里的令牌值（从提取结果抄），缺失的留原值别删。
+  1. 替换下面 :root 里的槽位值（从 design.md 的令牌表抄）。槽位名与 shadcn 一致，
+     没改的槽位不用写；下面给的是占位值，逐条换掉。
   2. 替换 <img> 的 src 为参考图路径，方便左右对照。
-  3. 组件区按提取到的控件增删；图里没有的状态标成虚线框并注明来源。
+  3. 组件区按图上出现的控件增删；图上没有的状态标成虚线框并注明来源。
   4. 浏览器打开，让用户对着参考图逐块比对。确认后本文件删掉，不进版本库。
 
   页面自身的界面刻意保持中性灰白：不要用提取出来的颜色装饰本页，
   否则用户看到的对比会被本页配色带偏。
 -->
 <style>
-  /* ===== 待替换：提取到的令牌 ===== */
+  /* ===== 待替换：改动后的令牌（shadcn 槽位名，值抄脚本输出的 oklch） ===== */
   :root {
-    --color-bg: #fafafa;
-    --color-surface: #ffffff;
-    --color-border: #e5e5e5;
-    --color-text: #1a1a1a;
-    --color-text-muted: #8a8a8a;
-    --color-primary: #2563eb;
-    --color-danger: #dc2626;
+    --background: oklch(0.9851 0 0);
+    --foreground: oklch(0.2178 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2178 0 0);
+    --popover: oklch(1 0 0);
+    --primary: oklch(0.5461 0.2152 262.88);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.95 0 0);
+    --secondary-foreground: oklch(0.2178 0 0);
+    --muted: oklch(0.95 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.95 0 0);
+    --accent-foreground: oklch(0.2178 0 0);
+    --destructive: oklch(0.5771 0.2152 27.33);
+    --border: oklch(0.9 0 0);
+    --input: oklch(0.9 0 0);
+    --ring: oklch(0.708 0 0);
+    --radius: 0.5rem;
 
-    --font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    --text-title: 24px;
-    --text-body: 16px;
-    --text-label: 13px;
-
-    --space-1: 4px;
-    --space-2: 8px;
-    --space-3: 16px;
-    --space-4: 24px;
-    --space-5: 32px;
-
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-full: 9999px;
-    --shadow-sm: 0 1px 2px rgb(0 0 0 / .05);
+    --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
   }
 
   /* ===== 以下是本页自己的中性外壳，不要替换 ===== */
@@ -67,6 +65,7 @@
   }
   .s-obs::before { background: #333; }
   .s-dec::before { background: #fff; }
+  .s-inh::before { background: #ddd; }
   .s-inf::before { background: repeating-linear-gradient(45deg, #999 0 1px, #fff 1px 3px); }
 
   .ref img { max-width: 100%; border: 1px solid #ddd; display: block; }
@@ -93,7 +92,7 @@
     background-size: 12px 12px;
     background-position: 0 0, 0 6px, 6px -6px, -6px 0;
   }
-  /* 类名刻意不叫 .chip：会和下面的 Chip 组件撞名，把圆角与 background 简写带进来 */
+  /* 类名刻意不叫 .chip：会和下面的 Badge 撞名，把圆角与 background 简写带进来 */
   .swatch .fill { height: 72px; }
   .swatch .info { padding: 8px 10px; font-size: 12px; border-top: 1px solid #ddd; background-color: #fff; }
   .swatch .tok { font-weight: 600; }
@@ -126,33 +125,35 @@
   }
 
   .btn {
-    font-family: var(--font-family); font-size: 15px; font-weight: 600;
-    padding: 12px 24px; border: 0; cursor: default;
+    font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+    height: 36px; padding: 0 16px; border: 1px solid transparent;
+    border-radius: var(--radius); cursor: default;
   }
-  .btn-primary { background: var(--color-primary); color: #fff; border-radius: var(--radius-sm); }
-  .btn-secondary { background: transparent; color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
-  .btn-danger { background: var(--color-danger); color: #fff; border-radius: var(--radius-sm); }
-  .btn:disabled { opacity: .4; }
+  .btn-primary { background: var(--primary); color: var(--primary-foreground); }
+  .btn-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+  .btn-destructive { background: var(--destructive); color: var(--primary-foreground); }
+  .btn-outline { background: transparent; color: var(--foreground); border-color: var(--border); }
+  .btn:disabled { opacity: .5; }
 
   .input {
-    font-family: var(--font-family); font-size: 15px; color: var(--color-text);
-    background: var(--color-surface); border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm); padding: 12px 16px; width: 260px;
+    font-family: var(--font-sans); font-size: 14px; color: var(--foreground);
+    background: transparent; border: 1px solid var(--input);
+    border-radius: var(--radius); height: 36px; padding: 0 12px; width: 240px;
   }
-  .input::placeholder { color: var(--color-text-muted); }
+  .input::placeholder { color: var(--muted-foreground); }
 
   .card {
-    background: var(--color-surface); border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm); padding: var(--space-3); width: 260px;
-    font-family: var(--font-family); color: var(--color-text);
+    background: var(--card); color: var(--card-foreground);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px; width: 240px; font-family: var(--font-sans);
   }
-  .card .card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .card .card-sub { font-size: 13px; color: var(--color-text-muted); }
+  .card .card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .card .card-sub { font-size: 12px; color: var(--muted-foreground); }
 
-  .chip {
-    font-family: var(--font-family); font-size: 12px; font-weight: 500;
-    padding: 4px 12px; border-radius: var(--radius-full);
-    background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border);
+  .badge {
+    font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+    padding: 2px 10px; border-radius: 9999px;
+    background: var(--secondary); color: var(--secondary-foreground);
   }
 
   .note { font-size: 12px; color: #888; margin-top: 12px; }
@@ -162,10 +163,11 @@
 <body>
 <main>
   <h1>设计系统核对页</h1>
-  <p class="meta">对着参考图逐块比对。有出入的地方当场说，回到提取步骤重新采样，不要就地改数字。</p>
+  <p class="meta">对着参考图逐块比对。有出入的地方当场说，回到取色步骤重新采样，不要就地改数字。</p>
   <div class="legend">
     <span class="s-obs">观察到：图里读到的</span>
     <span class="s-dec">裁定：用户拍板的</span>
+    <span class="s-inh">继承：底座现状</span>
     <span class="s-inf">推断：按惯例补的</span>
   </div>
 
@@ -175,110 +177,135 @@
     <figcaption>[参考图路径]，[宽 x 高] px，[YYYY-MM-DD]</figcaption>
   </figure>
 
-  <h2>颜色</h2>
+  <h2>令牌</h2>
   <div class="swatches">
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-bg)"></div>
-      <div class="info"><div class="tok">--color-bg</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--background)"></div>
+      <div class="info"><div class="tok">--background</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-surface)"></div>
-      <div class="info"><div class="tok">--color-surface</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--foreground)"></div>
+      <div class="info"><div class="tok">--foreground</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-border)"></div>
-      <div class="info"><div class="tok">--color-border</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--card)"></div>
+      <div class="info"><div class="tok">--card</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-text)"></div>
-      <div class="info"><div class="tok">--color-text</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--muted)"></div>
+      <div class="info"><div class="tok">--muted</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-text-muted)"></div>
-      <div class="info"><div class="tok">--color-text-muted</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--muted-foreground)"></div>
+      <div class="info"><div class="tok">--muted-foreground</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-primary)"></div>
-      <div class="info"><div class="tok">--color-primary</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--secondary)"></div>
+      <div class="info"><div class="tok">--secondary</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
     <div class="swatch">
-      <div class="fill" style="background-color: var(--color-danger)"></div>
-      <div class="info"><div class="tok">--color-danger</div><div class="use">[用途]</div><div class="src">[来源]</div></div>
+      <div class="fill" style="background-color: var(--accent)"></div>
+      <div class="info"><div class="tok">--accent</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
     </div>
-    <!-- 增删到与 design.md 的颜色表一致 -->
+    <div class="swatch">
+      <div class="fill" style="background-color: var(--primary)"></div>
+      <div class="info"><div class="tok">--primary</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
+    </div>
+    <div class="swatch">
+      <div class="fill" style="background-color: var(--primary-foreground)"></div>
+      <div class="info"><div class="tok">--primary-foreground</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
+    </div>
+    <div class="swatch">
+      <div class="fill" style="background-color: var(--destructive)"></div>
+      <div class="info"><div class="tok">--destructive</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
+    </div>
+    <div class="swatch">
+      <div class="fill" style="background-color: var(--border)"></div>
+      <div class="info"><div class="tok">--border</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
+    </div>
+    <div class="swatch">
+      <div class="fill" style="background-color: var(--ring)"></div>
+      <div class="info"><div class="tok">--ring</div><div class="use">[角色]</div><div class="src">[来源]</div></div>
+    </div>
+    <!-- 增删到与 design.md 的令牌表一致：改过的槽位都在这里，没改的不列 -->
   </div>
   <p class="note">色块外框的棋盘格用来暴露透明或半透明的颜色。逐个和参考图上的对应控件比，颜色偏一点点都看得出来。</p>
 
   <h2>排版</h2>
   <div class="type-row">
-    <div class="spec">[标题] [~24px] / 600 / 1.3</div>
-    <div class="sample" style="font-family: var(--font-family); font-size: var(--text-title); font-weight: 600">设计系统的样子</div>
+    <div class="spec">[页面标题] text-2xl · 24px · 600</div>
+    <div class="sample" style="font-family: var(--font-sans); font-size: 24px; font-weight: 600">设计系统的样子</div>
   </div>
   <div class="type-row">
-    <div class="spec">[正文] [~16px] / 400 / 1.5</div>
-    <div class="sample" style="font-family: var(--font-family); font-size: var(--text-body)">设计系统的样子 Aa Bb Cc 0123</div>
+    <div class="spec">[正文] text-sm · 14px · 400</div>
+    <div class="sample" style="font-family: var(--font-sans); font-size: 14px">设计系统的样子 Aa Bb Cc 0123</div>
   </div>
   <div class="type-row">
-    <div class="spec">[标签] [~13px] / 500 / 1.4</div>
-    <div class="sample" style="font-family: var(--font-family); font-size: var(--text-label); font-weight: 500">设计系统的样子</div>
+    <div class="spec">[标签] text-xs · 12px · 500</div>
+    <div class="sample" style="font-family: var(--font-sans); font-size: 12px; font-weight: 500">设计系统的样子</div>
   </div>
   <p class="note">字号按真实像素渲染，拿参考图叠上来比更准。字体族认不准时，这里渲染的是近似替代，看整体气质对不对。</p>
 
-  <h2>间距刻度</h2>
+  <h2>间距档位</h2>
   <div class="bars">
-    <div class="bar-row"><span class="name">--space-1</span><span class="bar" style="width: var(--space-1)"></span><span>4px</span></div>
-    <div class="bar-row"><span class="name">--space-2</span><span class="bar" style="width: var(--space-2)"></span><span>8px</span></div>
-    <div class="bar-row"><span class="name">--space-3</span><span class="bar" style="width: var(--space-3)"></span><span>16px</span></div>
-    <div class="bar-row"><span class="name">--space-4</span><span class="bar" style="width: var(--space-4)"></span><span>24px</span></div>
-    <div class="bar-row"><span class="name">--space-5</span><span class="bar" style="width: var(--space-5)"></span><span>32px</span></div>
+    <div class="bar-row"><span class="name">gap-1</span><span class="bar" style="width: 4px"></span><span>4px</span></div>
+    <div class="bar-row"><span class="name">gap-2</span><span class="bar" style="width: 8px"></span><span>8px</span></div>
+    <div class="bar-row"><span class="name">gap-3</span><span class="bar" style="width: 12px"></span><span>12px</span></div>
+    <div class="bar-row"><span class="name">gap-4</span><span class="bar" style="width: 16px"></span><span>16px</span></div>
+    <div class="bar-row"><span class="name">gap-6</span><span class="bar" style="width: 24px"></span><span>24px</span></div>
+    <div class="bar-row"><span class="name">gap-8</span><span class="bar" style="width: 32px"></span><span>32px</span></div>
   </div>
+  <p class="note">底座的刻度是固定的，这一节只在图中量到的间距明显不落档位时才需要逐条核对。</p>
 
   <h2>形状与深度</h2>
   <div class="radius-row">
-    <div class="radius-cell"><div class="box" style="border-radius: var(--radius-sm)"></div>--radius-sm</div>
-    <div class="radius-cell"><div class="box" style="border-radius: var(--radius-md)"></div>--radius-md</div>
-    <div class="radius-cell"><div class="box" style="border-radius: var(--radius-full)"></div>--radius-full</div>
+    <div class="radius-cell"><div class="box" style="border-radius: var(--radius)"></div>--radius</div>
+    <div class="radius-cell"><div class="box" style="border-radius: 9999px"></div>rounded-full</div>
   </div>
+  <p class="note">只核对 <code>--radius</code> 这个基准；<code>--radius-sm</code> 一类派生档位由样式文件里的 calc 行算出来，本页不重复渲染。胶囊类的控件与它无关。</p>
   <h3>阴影</h3>
   <div class="shadow-row">
-    <div class="shadow-cell"><div class="box" style="box-shadow: var(--shadow-sm)"></div>--shadow-sm</div>
+    <div class="shadow-cell"><div class="box" style="box-shadow: 0 1px 2px 0 rgb(0 0 0 / .05)"></div>shadow-xs</div>
+    <div class="shadow-cell"><div class="box" style="box-shadow: 0 1px 3px 0 rgb(0 0 0 / .1)"></div>shadow-sm</div>
   </div>
+  <p class="note">用到的档位逐条铺开，没用到的不列。</p>
 
   <h2>控件</h2>
   <div class="stage">
-    <h3>按钮</h3>
+    <h3>Button</h3>
     <div class="row">
-      <div class="slot"><button class="btn btn-primary">主要按钮</button><div>默认</div></div>
-      <div class="slot"><button class="btn btn-secondary">次要按钮</button><div>次要</div></div>
-      <div class="slot"><button class="btn btn-danger">危险操作</button><div>危险 [来源]</div></div>
-      <div class="slot"><button class="btn btn-primary" disabled>禁用</button><div>禁用 [来源]</div></div>
-      <div class="slot"><span class="missing">hover 态未定</span></div>
+      <div class="slot"><button class="btn btn-primary">主要按钮</button><div>default [来源]</div></div>
+      <div class="slot"><button class="btn btn-secondary">次要按钮</button><div>secondary [来源]</div></div>
+      <div class="slot"><button class="btn btn-outline">描边按钮</button><div>outline [来源]</div></div>
+      <div class="slot"><button class="btn btn-destructive">危险操作</button><div>destructive [来源]</div></div>
+      <div class="slot"><button class="btn btn-primary" disabled>禁用</button><div>disabled [来源]</div></div>
+      <div class="slot"><span class="missing">hover 与图不一致？</span></div>
     </div>
 
-    <h3>输入框</h3>
+    <h3>Input</h3>
     <div class="row">
-      <div class="slot"><input class="input" placeholder="占位文字"><div>默认</div></div>
-      <div class="slot"><span class="missing">错误态未定</span></div>
+      <div class="slot"><input class="input" placeholder="占位文字"><div>默认 [来源]</div></div>
+      <div class="slot"><span class="missing">错误态与图不一致？</span></div>
     </div>
 
-    <h3>卡片</h3>
+    <h3>Card</h3>
     <div class="row">
       <div class="slot">
         <div class="card">
           <div class="card-title">卡片标题</div>
           <div class="card-sub">次要文字的样子</div>
         </div>
-        <div>默认</div>
+        <div>默认 [来源]</div>
       </div>
     </div>
 
-    <h3>Chip</h3>
+    <h3>Badge</h3>
     <div class="row">
-      <div class="slot"><span class="chip">标签</span><div>默认</div></div>
+      <div class="slot"><span class="badge">标签</span><div>默认 [来源]</div></div>
     </div>
-    <!-- 按清点清单增删控件；图里没有的状态一律用 .missing 占位，不要凭感觉渲染 -->
+    <!-- 按清点清单增删控件；图上没有的状态一律用 .missing 占位，不要凭感觉渲染 -->
   </div>
-  <p class="note">虚线框里的状态是图里没有的。看到 <code>.missing</code> 就知道这一项还没定，别当成已经确认。</p>
+  <p class="note">虚线框里的状态是图里没有的。看到 <code>.missing</code> 就知道这一项还没定，别当成已经确认。只列图上出现过的控件：图里没有的组件继承底座，不必在这里出现。</p>
 </main>
 </body>
 </html>

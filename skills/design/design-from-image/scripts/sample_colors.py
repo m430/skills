@@ -9,10 +9,14 @@
 
 坐标可写像素 ("120,340") 或百分比 ("30%,50%")。点数与线宽为 0 的输入会被拒绝。
 
+颜色同时给出 hex 与 oklch。oklch 一列可以直接粘进 CSS（shadcn 的主题令牌就用这个格式），
+所以取到色之后不需要再手工换算。
+
 依赖: Pillow (python3 -m venv .venv && .venv/bin/pip install Pillow)
 """
 
 import argparse
+import math
 import sys
 
 try:
@@ -73,6 +77,44 @@ def hex_of(pixel):
     return "#{:02x}{:02x}{:02x}".format(*pixel)
 
 
+def srgb_to_oklch(pixel):
+    """sRGB 0-255 -> OKLCh。矩阵取自 Ottosson 的 oklab 参考实现。"""
+
+    def to_linear(channel):
+        c = channel / 255.0
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+    r, g, b = (to_linear(v) for v in pixel)
+    l = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b
+    m = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b
+    s = 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b
+    l_, m_, s_ = (math.copysign(abs(v) ** (1 / 3), v) for v in (l, m, s))
+
+    lightness = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_
+    a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_
+    b2 = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
+
+    chroma = math.hypot(a, b2)
+    hue = math.degrees(math.atan2(b2, a)) % 360
+    return lightness, chroma, hue
+
+
+def _num(value, places):
+    text = f"{value:.{places}f}"
+    return text.rstrip("0").rstrip(".") if "." in text else text
+
+
+def oklch_of(pixel):
+    """写成可直接粘进 CSS 的形式，例如 oklch(0.4885 0.2428 264.05)。
+
+    无彩色（chroma 近 0）的色相没有意义，固定写 0，免得每取一次灰都报一个随机角度。
+    """
+    lightness, chroma, hue = srgb_to_oklch(pixel)
+    if chroma < 5e-4:
+        hue = 0.0
+    return f"oklch({_num(lightness, 4)} {_num(chroma, 4)} {_num(hue, 2)})"
+
+
 def average_box(img, x, y, radius):
     """取 (x, y) 周围 (2*radius+1)^2 的均值，用于压制 JPEG 噪点。
 
@@ -117,8 +159,8 @@ def cmd_palette(args):
     print(f"区域      {img.width} x {img.height} px，共 {total} 像素")
     print(f"主色      Top {args.top}，按占比降序，低于 {args.min_share:g}% 的不列")
     print()
-    print(f"{'#':>3}  {'hex':<9} {'rgb':<16} {'占比':>7}   条带")
-    print("-" * 56)
+    print(f"{'#':>3}  {'hex':<9} {'oklch':<28} {'rgb':<16} {'占比':>7}   条带")
+    print("-" * 85)
 
     shown = 0
     for count, index in counts:
@@ -128,7 +170,10 @@ def cmd_palette(args):
         rgb = tuple(palette[index * 3 : index * 3 + 3])
         shown += 1
         bar = "█" * max(1, round(share / 2))
-        print(f"{shown:>3}  {hex_of(rgb):<9} {str(rgb):<16} {share:>6.1f}%   {bar}")
+        print(
+            f"{shown:>3}  {hex_of(rgb):<9} {oklch_of(rgb):<28} {str(rgb):<16} "
+            f"{share:>6.1f}%   {bar}"
+        )
 
     if shown == 0:
         print("(没有颜色达到该占比，降低 --min-share 试试)")
@@ -143,13 +188,16 @@ def cmd_sample(args):
     avg_note = f"{args.avg}x{args.avg} 均值" if args.avg > 1 else "单像素"
     print(f"取色      {len(points)} 个点，{avg_note}（图 {img.width}x{img.height}）")
     print()
-    print(f"{'#':>3}  {'坐标':<16} {'hex':<9} {'rgb':<16} {'xy':>10}")
-    print("-" * 62)
+    print(f"{'#':>3}  {'坐标':<16} {'hex':<9} {'oklch':<28} {'rgb':<16} {'xy':>10}")
+    print("-" * 95)
 
     for index, raw in enumerate(points, start=1):
         x, y = parse_point(raw, img.size)
         rgb = average_box(img, x, y, (args.avg - 1) // 2)
-        print(f"{index:>3}  {raw.strip():<16} {hex_of(rgb):<9} {str(rgb):<16} {f'{x},{y}':>10}")
+        print(
+            f"{index:>3}  {raw.strip():<16} {hex_of(rgb):<9} {oklch_of(rgb):<28} "
+            f"{str(rgb):<16} {f'{x},{y}':>10}"
+        )
 
 
 def cmd_scan(args):
@@ -185,13 +233,14 @@ def cmd_scan(args):
     print(f"扫描      ({x1},{y1}) -> ({x2},{y2})，{steps} 步，容差 {args.tolerance}/通道")
     print(f"总长      {steps} px")
     print()
-    print(f"{'#':>3}  {'hex':<9} {'rgb':<16} {'长度':>7}  {'起点':<12} {'沿线偏移':>10}")
-    print("-" * 66)
+    # oklch 排在最后：本命令的主产出是长度，超宽时被折到下一行的应该是颜色而不是尺寸
+    print(f"{'#':>3}  {'hex':<9} {'rgb':<16} {'长度':>7}  {'起点':<12} {'沿线偏移':>10}  oklch")
+    print("-" * 95)
     for index, seg in enumerate(segments, start=1):
         start = f"{seg['start'][0]},{seg['start'][1]}"
         print(
             f"{index:>3}  {hex_of(seg['rgb']):<9} {str(seg['rgb']):<16} "
-            f"{seg['length']:>5} px  {start:<12} {seg['offset']:>7} px"
+            f"{seg['length']:>5} px  {start:<12} {seg['offset']:>7} px  {oklch_of(seg['rgb'])}"
         )
 
     print()

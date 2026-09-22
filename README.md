@@ -85,17 +85,18 @@ flowchart LR
     C --> O["产出：docs/agents/ 下的配置<br/>+ AGENTS.md 的 Agent skills 块"]
 ```
 
-有 UI 的仓库还要一份设计系统：`setup-skills` 只登记约定，产物由 `design-from-image` 出。给它一张设计参考图，它逐控件按像素取色、量出字阶与间距、归纳成令牌，缺口当面问清，最后写出 `design.md`，并把块里那一节换成读文件的说法。
+shadcn 项目还要一份设计系统：`setup-skills` 只登记约定，产物由 `design-from-image` 出。底座是 shadcn/ui，它给一张设计参考图，逐控件按像素取色（脚本直接输出 oklch）、量出字阶与间距，收敛成槽位上的改动，缺口当面问清，最后写出 `design.md`，并把块里那一节换成读文件的说法。
 
 ```mermaid
 flowchart LR
-    I["一张设计参考图"] --> X["读控件、按像素取色<br/>归纳成令牌"]
+    B["shadcn 底座<br/>槽位 · 组件 · 尺度"] --> X
+    I["一张设计参考图"] --> X["读控件、按像素取色<br/>收敛成槽位上的改动"]
     X --> Q["缺口提问<br/>最多 5 个，一次一个"]
     Q --> SG["一次性核对页<br/>对着参考图比对"]
     SG --> D["写入 design.md<br/>+ Agent skills 块登记"]
 ```
 
-**产出**：一份仓库级配置（迭代产物在哪、领域文档在哪），以及 UI 项目的 `design.md`（颜色、排版、间距、组件规范，每条标注是观察到、裁定还是推断）。之后每个技能会话都从 `AGENTS.md` 的 `## Agent skills` 块与 `docs/agents/` 读约定；`sprints/` 是固定约定，不用配置。
+**产出**：一份仓库级配置（迭代产物在哪、领域文档在哪），以及 shadcn 项目的 `design.md`（在底座上改了哪些令牌与组件，每条标注是观察到、裁定、继承还是推断）。之后每个技能会话都从 `AGENTS.md` 的 `## Agent skills` 块与 `docs/agents/` 读约定；`sprints/` 是固定约定，不用配置。
 
 ### 阶段 1 · 需求（把想法磨锐）
 
@@ -224,7 +225,7 @@ flowchart LR
 
 **User-invoked**
 
-- **[design-from-image](./skills/design/design-from-image/SKILL.md)**: 从一张设计参考图提取项目级设计系统，写出仓库根目录的 `design.md`（配色按角色、排版、间距、形状与深度、组件规范，每条标注观察到 / 裁定 / 推断），并在 `Agent skills` 块里登记，供后续 UI 工作遵循。有 UI 的仓库运行一次。
+- **[design-from-image](./skills/design/design-from-image/SKILL.md)**: 在 shadcn/ui 底座上，按一张设计参考图改出项目级设计系统，写出仓库根目录的 `design.md`：令牌收敛到 shadcn 的槽位、颜色由脚本按像素采样并直接给出 oklch、每条标注观察到 / 裁定 / 继承 / 推断，沿用底座的组件体系而不是另造一套。每个 shadcn 项目运行一次。
 
 **Model-invoked**
 
@@ -245,7 +246,7 @@ flowchart LR
 - **[implement-story](./skills/engineering/implement-story/SKILL.md)**: 实现一条 story，在预先约定的接缝（seam）驱动 `/tdd`，收尾跑 `/code-review` 后提交，完成后更新 story 状态。
 - **[close-sprint](./skills/engineering/close-sprint/SKILL.md)**: 评估迭代完成情况并写入 `SPRINT.md`，关闭迭代；未完成的 story 逐条定好去向。
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: 扫描代码库寻找深化机会，以可视化 HTML 报告呈现，选定后进入拷问循环。
-- **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（迭代工作区约定、领域文档布局，有 UI 的仓库还登记设计系统）。使用其他工程技能前每仓库运行一次。
+- **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（迭代工作区约定、领域文档布局，shadcn 项目还登记设计系统）。使用其他工程技能前每仓库运行一次。
 
 **Model-invoked**
 
