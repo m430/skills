@@ -1,6 +1,10 @@
 # m430 Skills
 
-面向真实工程实践的 AI 编程技能集（中文版）。fork 自 [mattpocock/skills](https://github.com/mattpocock/skills)（MIT），全部技能文档已译成中文并按自身需要独立维护。
+一套面向真实工程实践的中文 AI 编程技能集。
+
+技能是一份份 Markdown 指令文件，装进 Claude Code、Codex 等支持 Agent Skills 的编码代理后即可调用。整套技能围绕一条交付主线组织：把想法拷问清楚（需求）、用一个一次性原型试出纸面答不了的答案（设计）、排进迭代拆成 story（计划）、按测试驱动逐条实现（开发）、提交前做双轴评审（评审）；修 bug 与代码库保养作为两条旁路，产出同样汇入主线。
+
+用法上，从任意仓库的 `/setup-skills` 开始。
 
 ## 这套技能解决什么问题
 
@@ -10,6 +14,8 @@ AI 编码代理最常见的四个失败模式，各自对应一类技能：
 2. **代理话太多**。修复方式是共享语言：一份 `CONTEXT.md` 词汇表，让代理用 1 个词说清原本要 20 个词的事。内置于 `/grill-with-docs`。
 3. **代码跑不起来**。修复方式是反馈环：静态类型、浏览器访问、自动化测试，尤其 red-green-refactor。见 `/tdd` 与 `/fix-bug`。
 4. **写出了一团泥球**。修复方式是每天关心代码设计。见 `/codebase-design` 与 `/improve-codebase-architecture`。
+
+这四条答案不是零散的技巧，而是被编排成一条可以照着走的交付主线，下一节的地图把它画了出来。
 
 ## 安装
 
@@ -53,7 +59,7 @@ scripts/link-skills.sh
 
 ## 快速开始
 
-1. 在你的项目里运行 `/setup-skills`（每个仓库一次）：写下 `sprints/` 迭代工作区约定与领域文档位置。
+1. 在你的项目里运行 `/setup-skills`（每个仓库一次）：写下 `sprints/` 迭代工作区约定与领域文档位置；shadcn 项目再加一步 `/design-from-image`（要一张参考图），把设计系统落到 `design.md`。
 2. 想到要做的事：用 `/add-backlog` 访谈梳理成一条 story 大小的需求，记进 `sprints/backlog/`。
 3. 按迭代交付：`/add-sprint` 开迭代，`/plan-sprint` 拆 story，`/implement-story` 逐条实现，`/close-sprint` 收尾。
 
@@ -269,7 +275,3 @@ flowchart LR
 **Model-invoked**
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: 就计划、决策或想法对用户毫不松口地访谈，直到设计树每条分支解决。`grill-me`、`grill-with-docs`、`improve-codebase-architecture` 背后可复用的访谈原语。
-
-## 致谢
-
-本仓库 fork 自 [Matt Pocock 的 skills 仓库](https://github.com/mattpocock/skills)，原项目以 MIT 许可发布，感谢其出色的工程实践沉淀。
