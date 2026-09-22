@@ -1,16 +1,16 @@
 ---
 name: code-review
-description: "沿两条轴线审查自某个固定点（commit、分支、tag 或 merge-base）以来的变更：标准（Standards，代码是否遵循本仓库成文的编码标准？）与规格（Spec，代码是否符合源 issue/规格的要求？）。两项审查在并行子代理中运行，并排报告结果。当用户想审查一个分支、一个 PR、进行中的变更，或要求“review since X”时使用。"
+description: "沿两条轴线审查自某个固定点（commit、分支、tag 或 merge-base）以来的变更：标准（Standards，代码是否遵循本仓库成文的编码标准？）与规格（Spec，代码是否符合源 story/规格的要求？）。两项审查在并行子代理中运行，并排报告结果。当用户想审查一个分支、一个 PR、进行中的变更，或要求“review since X”时使用。"
 ---
 
 对 `HEAD` 与用户提供的固定点之间 diff 的双轴审查：
 
 - **标准（Standards）**：代码是否符合本仓库成文的编码标准？
-- **规格（Spec）**：代码是否忠实实现了源 issue / 规格？
+- **规格（Spec）**：代码是否忠实实现了源 story / 规格？
 
 两条轴以**并行子代理**运行，互不污染上下文，随后由本技能汇总它们的发现。
 
-issue tracker 应当已经提供给你。如果缺少 `docs/agents/issue-tracker.md`，让用户运行 `/setup-skills`。
+规格来源通常是本地 `sprints/` 里的 story 文件，其次是用户传入的路径或仓库里的规格文档。
 
 ## 流程
 
@@ -26,9 +26,9 @@ issue tracker 应当已经提供给你。如果缺少 `docs/agents/issue-tracker
 
 按以下顺序寻找源规格：
 
-1. commit 消息里的 issue 引用（`#123`、`Closes #45`、GitLab `!67` 等），按 `docs/agents/issue-tracker.md` 中的工作流获取。
+1. 当前迭代的 story 文件：`sprints/sprint-NN/story-NN-*.md`，用户点名的那条，或与分支名、改动内容匹配的那条。
 2. 用户作为参数传入的路径。
-3. `docs/`、`specs/` 或 `.scratch/` 下与分支名或功能匹配的规格文件。
+3. `docs/` 或 `specs/` 下与分支名或功能匹配的规格文件。
 4. 什么都找不到就问用户规格在哪里。如果用户说没有规格，**规格**子代理将跳过并报告“无可用规格”。
 
 ### 3. 确定标准来源
@@ -82,6 +82,6 @@ issue tracker 应当已经提供给你。如果缺少 `docs/agents/issue-tracker
 一个变更可能通过一条轴却挂掉另一条：
 
 - 遵循每条标准却实现了错误之处的代码 → **标准通过，规格不通过。**
-- 完全按 issue 要求做却破坏项目约定的代码 → **规格通过，标准不通过。**
+- 完全按 story 要求做却破坏项目约定的代码 → **规格通过，标准不通过。**
 
 分开报告能防止一条轴掩盖另一条。

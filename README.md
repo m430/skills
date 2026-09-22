@@ -8,7 +8,7 @@ AI 编码代理最常见的四个失败模式，各自对应一类技能：
 
 1. **代理没做出你想要的**。修复方式是拷问（grilling）：让代理就你要做的东西对你展开细致追问，对齐之后再动手。见 `/grill-me` 与 `/grill-with-docs`。
 2. **代理话太多**。修复方式是共享语言：一份 `CONTEXT.md` 词汇表，让代理用 1 个词说清原本要 20 个词的事。内置于 `/grill-with-docs`。
-3. **代码跑不起来**。修复方式是反馈环：静态类型、浏览器访问、自动化测试，尤其 red-green-refactor。见 `/tdd` 与 `/diagnosing-bugs`。
+3. **代码跑不起来**。修复方式是反馈环：静态类型、浏览器访问、自动化测试，尤其 red-green-refactor。见 `/tdd` 与 `/fix-bug`。
 4. **写出了一团泥球**。修复方式是每天关心代码设计。见 `/codebase-design` 与 `/improve-codebase-architecture`。
 
 ## 安装
@@ -53,13 +53,13 @@ scripts/link-skills.sh
 
 ## 快速开始
 
-1. 在你的项目里运行 `/setup-skills`（每个仓库一次）：选择 issue tracker、文档位置。
-2. 想到要做的事：用 `/add-backlog` 记进需求池（`sprints/backlog/`）。
+1. 在你的项目里运行 `/setup-skills`（每个仓库一次）：写下 `sprints/` 迭代工作区约定与领域文档位置。
+2. 想到要做的事：用 `/add-backlog` 访谈梳理成一条 story 大小的需求，记进 `sprints/backlog/`。
 3. 按迭代交付：`/add-sprint` 开迭代，`/plan-sprint` 拆 story，`/implement-story` 逐条实现，`/close-sprint` 收尾。
 
 ## 按阶段看技能（工作流地图）
 
-技能组织成一条主线：一个想法被**磨锐**（需求）、**试出答案**（设计）、**排进迭代拆成 story**（计划）、**构建出来**（开发）、**检查过**（评审）。三条旁路是独立入口，产出汇入主线；另外一组技能垫在所有阶段下面。
+技能组织成一条主线：一个想法被**磨锐**（需求）、**试出答案**（设计）、**排进迭代拆成 story**（计划）、**构建出来**（开发）、**检查过**（评审）。两条旁路是独立入口，产出汇入主线；另外一组技能垫在所有阶段下面。
 
 ```mermaid
 flowchart LR
@@ -80,12 +80,12 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A["探索仓库现状<br/>git remote、AGENTS.md、CONTEXT.md、docs/adr/"] --> B["逐节确认<br/>issue tracker → 领域文档布局"]
+    A["探索仓库现状<br/>AGENTS.md、CONTEXT.md、docs/adr/、sprints/"] --> B["逐节确认<br/>迭代工作区 → 领域文档布局"]
     B --> C["展示草稿，确认后写入"]
     C --> O["产出：docs/agents/ 下的配置<br/>+ AGENTS.md 的 Agent skills 块"]
 ```
 
-**产出**：一份仓库级配置（issue 存在哪、领域文档在哪）。`to-tickets`、`code-review`、`wayfinder` 等技能之后都从这里读约定。
+**产出**：一份仓库级配置（迭代产物在哪、领域文档在哪）。之后每个技能会话都从 `AGENTS.md` 的 `## Agent skills` 块与 `docs/agents/` 读约定；`sprints/` 是固定约定，不用配置。
 
 ### 阶段 1 · 需求（把想法磨锐）
 
@@ -125,7 +125,7 @@ flowchart LR
 
 这是主线上的一次**绕道**，不是必经步骤：拷问中遇到“必须跑一下才知道”的问题（状态模型手感、UI 长相）时才进入，答案带回阶段 1。模块与接口形状本身存疑时，用 `codebase-design` 的词汇把问题说准。
 
-**产出**：被验证的设计决策（合入真实代码或写进规格）；原型本身提交到 `prototype/<name>` 分支，作为一手资料由实现 issue 指向。
+**产出**：被验证的设计决策（合入真实代码或写进规格）；原型本身提交到 `prototype/<name>` 分支，作为一手资料由后续实现参考。
 
 ### 阶段 3 · 计划（迭代与 story）
 
@@ -133,7 +133,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    C["阶段 1 与 2 谈清楚的东西"] --> AB["add-backlog<br/>待规划需求进 sprints/backlog/"]
+    C["一个想法"] --> AB["add-backlog<br/>访谈成一条 story 大小的需求"]
     AB --> AS["add-sprint<br/>确认上个迭代已关闭，定迭代目标"]
     AS --> PS["plan-sprint<br/>推荐 backlog 需求，拆出 story 清单"]
     PS --> SF["每条 story 一个文件<br/>sprints/sprint-NN/story-NN-*.md"]
@@ -142,11 +142,9 @@ flowchart LR
     ED -.-> SF
 ```
 
-只有**多会话的构建**需要这一步；一个上下文装得下的小改动从阶段 1 直接进阶段 4。需求先进 `sprints/backlog/`（一条一个文件，不编号），开迭代时定目标，再按目标从 backlog 推荐需求、拆成 story：每条是垂直切片，自带验收标准与任务清单，声明被谁阻塞。
+只有**多会话的构建**需要这一步；一个上下文装得下的小改动从阶段 1 直接进阶段 4。需求先进 `sprints/backlog/`：`add-backlog` 把想法访谈到一条 story 大小的粒度（一条一个文件，不编号，验收意图与边界写清楚），开迭代时定目标，再按目标从 backlog 推荐需求、拆成 story：每条是垂直切片，自带验收标准与任务清单，声明被谁阻塞。
 
 **产出**：一份 `SPRINT.md`（迭代目标与 story 清单）和一组 `sprints/sprint-NN/story-NN-*.md`。此后逐条推进：阻塞者已完成的 story 就可以领走。
-
-需要把工作发布到真实 issue tracker（GitHub、Linear）而不是本地文件时，仍可用 `to-tickets` 拆成带阻塞边的工单。
 
 ### 阶段 4 · 开发（逐条 story 实现）
 
@@ -192,21 +190,19 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    WF["wayfinder<br/>一个会话装不下的迷雾"] --> B2["决策地图，逐张解决决策"] --> X3["收拢成计划，汇入阶段 3"]
     IA["improve-codebase-architecture<br/>扫描深化机会"] --> R2["HTML 报告 + 对选中者的拷问"] --> X1["汇入阶段 1"]
-    DB["diagnosing-bugs<br/>难缠 bug 与性能回归"] --> R3["反馈环 → 修复 + 回归测试"]
+    DB["fix-bug<br/>难缠 bug 与性能回归"] --> R3["反馈环 → 修复 + 回归测试"]
     R3 -->|接缝缺失时转交| IA
 ```
 
-- **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**：认知负担最重的入口，只用于一个会话装不下的巨大事项。**产出**：决策地图与逐个解决的决策，收拢成可建造的计划后汇入阶段 3。
-- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**：难 bug 与性能回归。拿到紧凑的反馈循环之前拒绝空谈理论。**产出**：修复、回归测试，以及被证实正确的假设（写进提交消息）。发现没有可锁死 bug 的接缝时，转交 `improve-codebase-architecture`。
+- **[fix-bug](./skills/engineering/fix-bug/SKILL.md)**：难 bug 与性能回归。拿到紧凑的反馈循环之前拒绝空谈理论。**产出**：修复、回归测试，以及被证实正确的假设（写进提交消息）。发现没有可锁死 bug 的接缝时，转交 `improve-codebase-architecture`。有进行中的迭代时，它把 bug 记成 `sprints/sprint-NN/bug-NN-*.md` 并回填 `SPRINT.md` 的缺陷清单，迭代里因此能同时看到需求和 bug。
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**：代码库保养。**产出**：深化机会报告；选中一个就生成想法，从阶段 1 进入主线。
 
 ### 贯穿与独立技能
 
 | 技能 | 什么时候用 |
 |---|---|
-| [grilling](./skills/productivity/grilling/SKILL.md) | 访谈原语本身：一次一个问题，事实归代理查、决定归你拍板。`grill-me`、`grill-with-docs`、`wayfinder`、`improve-codebase-architecture` 内部都在跑它 |
+| [grilling](./skills/productivity/grilling/SKILL.md) | 访谈原语本身：一次一个问题，事实归代理查、决定归你拍板。`grill-me`、`grill-with-docs`、`improve-codebase-architecture` 内部都在跑它 |
 | [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 领域词汇的维护纪律：挑战模糊术语，当场更新 `CONTEXT.md`，适时记 ADR |
 | [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 深模块词汇（module、interface、depth、seam、adapter、leverage、locality），任何设计或评审接口与接缝的场合 |
 | [handoff](./skills/productivity/handoff/SKILL.md) | 阶段边界上要换 harness、换目录、换人，或中途开一条支线时，写一份可携带的交接文档 |
@@ -227,7 +223,7 @@ flowchart LR
 **User-invoked**
 
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: 拷问式访谈，同时构建项目领域模型，现场打磨术语并更新 `CONTEXT.md` 与 ADR。
-- **[add-backlog](./skills/engineering/add-backlog/SKILL.md)**: 把讨论中冒出来的想法记成一条待规划需求，写进 `sprints/backlog/`；不编号，不归属任何迭代。
+- **[add-backlog](./skills/engineering/add-backlog/SKILL.md)**: 把讨论里冒出来的想法用拷问式访谈梳理成一条待规划需求，写进 `sprints/backlog/`；粒度控制在一条 story，不编号，不归属任何迭代。
 - **[add-sprint](./skills/engineering/add-sprint/SKILL.md)**: 开启一个新迭代：确认上一个已关闭，问清迭代目标，初始化 `sprints/sprint-NN/` 与 `SPRINT.md`。
 - **[plan-sprint](./skills/engineering/plan-sprint/SKILL.md)**: 按迭代目标推荐 backlog 里的相关需求，拆出 story 清单经你确认后，为每条生成带序号的 story 文件。
 - **[add-story](./skills/engineering/add-story/SKILL.md)**: 给当前迭代补一条 story，同步更新 `SPRINT.md`。
@@ -235,20 +231,17 @@ flowchart LR
 - **[implement-story](./skills/engineering/implement-story/SKILL.md)**: 实现一条 story，在预先约定的接缝（seam）驱动 `/tdd`，收尾跑 `/code-review` 后提交，完成后更新 story 状态。
 - **[close-sprint](./skills/engineering/close-sprint/SKILL.md)**: 评估迭代完成情况并写入 `SPRINT.md`，关闭迭代；未完成的 story 逐条定好去向。
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: 扫描代码库寻找深化机会，以可视化 HTML 报告呈现，选定后进入拷问循环。
-- **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（issue tracker、领域文档布局）。使用其他工程技能前每仓库运行一次。
-- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: 把任意计划、规格或对话拆成一组垂直切片（vertical slice）工单，各自声明阻塞边，写入本地文件或真实 tracker 的原生阻塞链接。
-- **[implement](./skills/engineering/implement/SKILL.md)**: 实现规格或工单描述的工作，在预先约定的接缝（seam）驱动 `/tdd`，收尾跑 `/code-review` 后提交。
-- **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: 把超出单会话容量的巨大工作规划为 issue tracker 上的共享决策地图，逐个解决决策工单，直到通往终点的路清晰可见。
+- **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（迭代工作区约定、领域文档布局）。使用其他工程技能前每仓库运行一次。
 
 **Model-invoked**
 
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: 构建一次性原型回答设计问题：状态/逻辑问题用单个可分享 HTML 文件，UI 问题用一条路由可切换的多个差异巨大的变体。
-- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: 硬 bug 与性能回归的纪律化诊断环：建一条对该 bug 变红的反馈环，最小化，列假设，插桩，修复，回归测试。
+- **[fix-bug](./skills/engineering/fix-bug/SKILL.md)**: 硬 bug 与性能回归的纪律化诊断环：建一条对该 bug 变红的反馈环，最小化，列假设，插桩，修复，回归测试；有进行中的迭代时把 bug 记进 `sprints/sprint-NN/`，迭代里能同时看到需求和 bug。
 - **[research](./skills/engineering/research/SKILL.md)**: 以后台代理按高可信一手来源调研问题，把结论沉淀为仓库中带引用的 Markdown 文件。
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: 测试驱动开发，red-green-refactor 循环，一次一个垂直切片地构建功能或修复 bug。
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: 主动构建并打磨项目领域模型：对照词汇表挑战术语，用边界场景压测，当场更新 `CONTEXT.md` 与 ADR。
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: 设计深模块的共享纪律与词汇：小接口背后藏大量行为，落在干净的接缝上，经由接口可测。
-- **[code-review](./skills/engineering/code-review/SKILL.md)**: 对固定点以来的 diff 做双轴评审：Standards（仓库编码标准加 Fowler 坏味道基线）与 Spec（是否忠实实现来源 issue/规格），以并行子代理运行互不污染。
+- **[code-review](./skills/engineering/code-review/SKILL.md)**: 对固定点以来的 diff 做双轴评审：Standards（仓库编码标准加 Fowler 坏味道基线）与 Spec（是否忠实实现来源 story/规格），以并行子代理运行互不污染。
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: 逐 hunk 处理进行中的 git merge 或 rebase 冲突，按追溯到的两侧一手来源意图解决，然后完成操作（绝不 `--abort`）。
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: 生成交互式 bash 向导，引导人类完成只有他们能做的步骤：开通基础设施、配置凭据或 CI secrets、走不熟悉的第三方后台、执行一次性迁移。
 
@@ -266,7 +259,7 @@ flowchart LR
 
 **Model-invoked**
 
-- **[grilling](./skills/productivity/grilling/SKILL.md)**: 就计划、决策或想法对用户毫不松口地访谈，直到设计树每条分支解决。`grill-me`、`grill-with-docs`、`wayfinder`、`improve-codebase-architecture` 背后可复用的访谈原语。
+- **[grilling](./skills/productivity/grilling/SKILL.md)**: 就计划、决策或想法对用户毫不松口地访谈，直到设计树每条分支解决。`grill-me`、`grill-with-docs`、`improve-codebase-architecture` 背后可复用的访谈原语。
 - **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**: 写给代理消费的文档：技能、`AGENTS.md`/`CLAUDE.md`，以及代理经指针到达的任何文档。
 
 ## 致谢

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Fix Bug"
+  short_description: "Fix hard bugs and regressions, filed into the current sprint"

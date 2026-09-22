@@ -1,5 +1,5 @@
 interface:
   display_name: "Add Backlog"
-  short_description: "Record an idea as a backlog requirement"
+  short_description: "Interview an idea into one story-sized backlog requirement"
 policy:
   allow_implicit_invocation: false

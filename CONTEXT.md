@@ -4,27 +4,22 @@ A collection of agent skills (slash commands and behaviors) loaded by Claude Cod
 
 ## Language
 
-**Issue tracker**:
-The tool that hosts a repo's issues: GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets` read from and write to it.
-_Avoid_: backlog manager, backlog backend, issue host
+**需求（backlog item）**:
+An unnumbered requirement file under `sprints/backlog/`, written by `add-backlog`, waiting to be planned into a sprint.
+_Avoid_: issue, ticket
 
-**Issue**:
-A single tracked unit of work inside an **Issue tracker**: a bug, task, spec, or slice produced by `to-tickets`.
-_Avoid_: ticket (use only when quoting external systems that call them tickets, or for a **Decision ticket**, see below)
+**Sprint（迭代）**:
+A numbered delivery window, one directory `sprints/sprint-NN/` holding a `SPRINT.md` and its story and bug files.
 
-**Decision ticket**:
-A `wayfinder` unit: a child **Issue** of a `wayfinder:map` holding a *question* whose resolution is a decision, not a slice of a build to execute. The **decision** qualifier is what keeps it distinct from an implementation ticket; `wayfinder` introduces the term, then uses "ticket".
+**Story**:
+A vertical slice of a sprint, one file `sprints/sprint-NN/story-NN-<slug>.md`, with acceptance criteria, a task list, and the stories it is blocked by. Story numbers are globally monotonic across sprints.
+_Avoid_: ticket, issue
 
-**Triage role**:
-A canonical state-machine label applied to an **Issue** during triage (e.g. `needs-triage`, `ready-for-afk`). Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
+**Bug**:
+A defect being fixed inside a sprint, one file `sprints/sprint-NN/bug-NN-<slug>.md`, holding its description, solution and status. Bug numbers are globally monotonic across sprints.
+_Avoid_: issue, defect ticket
 
 ## Relationships
 
-- An **Issue tracker** holds many **Issues**
-- An **Issue** carries one **Triage role** at a time
-- A **Decision ticket** is an **Issue** (a child of a `wayfinder:map`)
-
-## Flagged ambiguities
-
-- "backlog" was previously used to mean both the *tool* hosting issues and the *body of work* inside it. Resolved: the tool is the **Issue tracker**; "backlog" is no longer used as a domain term.
-- "backlog backend" / "backlog manager". Resolved: collapsed into **Issue tracker**.
+- A **Sprint** holds many **Stories** and **Bugs**; a **Story** may block another **Story**
+- A **需求** becomes a **Story** (or several) when a sprint is planned

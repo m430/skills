@@ -10,9 +10,11 @@ disable-model-invocation: true
 
 ## 1. 推荐 backlog 需求
 
-逐条过 backlog，判断哪些和本迭代目标相关，列出来，每条给一句推荐理由。
+逐条过 `sprints/backlog/` 里状态为 `待规划` 的需求，判断哪些和本迭代目标相关，列出来，每条给一句推荐理由。
 
 然后让用户决定纳入哪些。运行环境提供结构化提问工具（`AskUserQuestion`）时，用一次多选提问收这个决定，候选是推荐纳入的需求标题，推荐项放第一位；不可用时退回文本。
+
+用户确认后，把纳入的那些条目的 `**状态：**` 改成 `已纳入 sprint-NN`。不标就会在下个迭代被重复推荐。
 
 没有相关需求时跳过这一步，直接进行第 2 步。
 
@@ -33,7 +35,7 @@ disable-model-invocation: true
 
 1. 为每条 story 建 `sprints/sprint-NN/story-NN-<slug>.md`，模板见下。
 2. **story 序号跨迭代全局递增**：扫 `sprints/sprint-*/story-*.md` 取最大编号往下排，不要每个迭代从 01 重开。story 号会被提交信息和阻塞边长期引用，重开编号会让引用变成歧义。
-3. 回填 `SPRINT.md` 的故事清单，一行一条。
+3. 回填 `SPRINT.md` 的故事清单，格式照文件里已有的清单行（`- [ ] story-NN：标题`），一行一条。已经列在里面的一律不动，比如 `/add-sprint` 移进来的带回 story，不要重复列。
 4. 告诉用户：实现时跑 `/implement-story`。
 
 ## 模板
@@ -61,3 +63,5 @@ disable-model-invocation: true
 </story-template>
 
 任务清单是**粗稿**：写的是预想的实现步骤，实现中发现更合适的做法时直接改它。
+
+`**状态：**` 的取值只有这几个：`待实现`（默认）、`实现中`、`已完成`、`已放弃`、`已退回 backlog`、`已带回下个迭代`。`/implement-story` 负责 `待实现 → 实现中 → 已完成`，关闭迭代时 `/close-sprint` 负责剩下三个。
