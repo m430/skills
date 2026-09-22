@@ -89,13 +89,12 @@ flowchart LR
 
 ### 阶段 1 · 需求（把想法磨锐）
 
-技能：[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)（主入口）、[grilling](./skills/productivity/grilling/SKILL.md)、[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)、[research](./skills/engineering/research/SKILL.md)、[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)、[grill-me](./skills/productivity/grill-me/SKILL.md)
+技能：[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)（主入口）、[grilling](./skills/productivity/grilling/SKILL.md)、[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)、[research](./skills/engineering/research/SKILL.md)、[grill-me](./skills/productivity/grill-me/SKILL.md)
 
 ```mermaid
 flowchart LR
     I["一个想法"] --> G["grill-with-docs<br/>内部跑 grilling + domain-modeling"]
     R["research<br/>后台代理查一手来源"] --> G
-    TQ["to-questionnaire<br/>去问知道的人"] --> G
     G --> Q{"纸面上还答得了吗"}
     Q -->|继续问下一个| G
     Q -->|纸面答不了| P["阶段 2 · prototype"]
@@ -103,7 +102,7 @@ flowchart LR
     Q -->|前沿清空| O["产出：对齐的共同理解<br/>+ CONTEXT.md 术语 + ADR"]
 ```
 
-在某个工作目录里干活时用 `grill-with-docs`；完全没有工作目录时改用 `grill-me`（同一套访谈，无状态、不落文档）。访谈中术语敲定就写进 `CONTEXT.md`，难逆转的决定记成 ADR。`research` 的产物和问卷回收的答案是这一阶段的输入。
+在某个工作目录里干活时用 `grill-with-docs`；完全没有工作目录时改用 `grill-me`（同一套访谈，无状态、不落文档）。访谈中术语敲定就写进 `CONTEXT.md`，难逆转的决定记成 ADR。`research` 的产物是这一阶段的输入。
 
 **产出**：一棵清空的决策树（你与代理对齐的共同理解），以及 `CONTEXT.md` 的新术语与新增 ADR。
 
@@ -148,7 +147,7 @@ flowchart LR
 
 ### 阶段 4 · 开发（逐条 story 实现）
 
-技能：[implement-story](./skills/engineering/implement-story/SKILL.md)、[tdd](./skills/engineering/tdd/SKILL.md)、[wizard](./skills/engineering/wizard/SKILL.md)、[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)、[handoff](./skills/productivity/handoff/SKILL.md)
+技能：[implement-story](./skills/engineering/implement-story/SKILL.md)、[tdd](./skills/engineering/tdd/SKILL.md)、[wizard](./skills/engineering/wizard/SKILL.md)
 
 ```mermaid
 flowchart LR
@@ -159,8 +158,6 @@ flowchart LR
     CR --> CM["提交到当前分支"]
     CM -->|下一条 story| T
     WZ["wizard<br/>只有人类能做的步骤"] -.-> IM
-    RC["resolving-merge-conflicts<br/>已在冲突中时"] -.-> IM
-    HD["handoff<br/>换会话、换目录、换人"] -.-> IM
     CM --> O["产出：每条 story 一个可独立验证的<br/>垂直切片 + 测试 + 提交"]
 ```
 
@@ -205,12 +202,7 @@ flowchart LR
 | [grilling](./skills/productivity/grilling/SKILL.md) | 访谈原语本身：一次一个问题，事实归代理查、决定归你拍板。`grill-me`、`grill-with-docs`、`improve-codebase-architecture` 内部都在跑它 |
 | [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 领域词汇的维护纪律：挑战模糊术语，当场更新 `CONTEXT.md`，适时记 ADR |
 | [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 深模块词汇（module、interface、depth、seam、adapter、leverage、locality），任何设计或评审接口与接缝的场合 |
-| [handoff](./skills/productivity/handoff/SKILL.md) | 阶段边界上要换 harness、换目录、换人，或中途开一条支线时，写一份可携带的交接文档 |
-| [wait-what](./skills/productivity/wait-what/SKILL.md) | 上一条消息没接住时，让它补齐上下文、用平实语言重讲 |
-| [resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 已经身处 merge 或 rebase 冲突中时，逐 hunk 按意图解决并完成操作，绝不 `--abort` |
 | [grill-me](./skills/productivity/grill-me/SKILL.md) | 不在任何工作目录里干活时的访谈入口：同一套访谈，无状态 |
-| [teach](./skills/productivity/teach/SKILL.md) | 把当前目录当学习工作区，跨多个会话教一个主题 |
-| [writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md) | 写技能、`AGENTS.md` 或其他给代理消费的文档时的写作参考 |
 
 ## 技能参考
 
@@ -242,7 +234,6 @@ flowchart LR
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: 主动构建并打磨项目领域模型：对照词汇表挑战术语，用边界场景压测，当场更新 `CONTEXT.md` 与 ADR。
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: 设计深模块的共享纪律与词汇：小接口背后藏大量行为，落在干净的接缝上，经由接口可测。
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: 对固定点以来的 diff 做双轴评审：Standards（仓库编码标准加 Fowler 坏味道基线）与 Spec（是否忠实实现来源 story/规格），以并行子代理运行互不污染。
-- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: 逐 hunk 处理进行中的 git merge 或 rebase 冲突，按追溯到的两侧一手来源意图解决，然后完成操作（绝不 `--abort`）。
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: 生成交互式 bash 向导，引导人类完成只有他们能做的步骤：开通基础设施、配置凭据或 CI secrets、走不熟悉的第三方后台、执行一次性迁移。
 
 ### Productivity
@@ -252,15 +243,10 @@ flowchart LR
 **User-invoked**
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: 就一个计划或设计被毫不松口地访谈，直到设计树的每条分支都解决。
-- **[handoff](./skills/productivity/handoff/SKILL.md)**: 把当前对话压缩成交接文档，让另一个代理继续这项工作。
-- **[teach](./skills/productivity/teach/SKILL.md)**: 以当前目录为有状态教学工作区，跨多个会话教用户一项新技能或概念。
-- **[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)**: 把你独自答不了的决策变成 Markdown 问卷，交给唯一能答的人异步填写或会上共同完成。它拷问的是发送侧（发给谁、要拿回什么），不是主题本身。
-- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: 上一条消息没接住时立刻触发。代理会补齐你缺的上下文，用平实语言和 `CONTEXT.md` 的词汇重新表达。
 
 **Model-invoked**
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: 就计划、决策或想法对用户毫不松口地访谈，直到设计树每条分支解决。`grill-me`、`grill-with-docs`、`improve-codebase-architecture` 背后可复用的访谈原语。
-- **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**: 写给代理消费的文档：技能、`AGENTS.md`/`CLAUDE.md`，以及代理经指针到达的任何文档。
 
 ## 致谢
 

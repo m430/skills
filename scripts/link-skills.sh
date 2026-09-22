@@ -18,9 +18,7 @@ DESTS=("$HOME/.claude/skills" "$HOME/.agents/skills")
 # Collect the repo's skills once, link into every destination. `misc/` is
 # kept around but rarely used and not promoted (see its own README): it
 # doesn't belong in a daily-driver skill directory, so it is skipped here,
-# same as everywhere else non-promoted skills are kept out. `in-progress/`
-# IS still linked: it's public on purpose, feedback wanted, and this local
-# install is exactly where that feedback loop runs.
+# same as everywhere else non-promoted skills are kept out.
 names=()
 srcs=()
 while IFS= read -r -d '' skill_md; do
