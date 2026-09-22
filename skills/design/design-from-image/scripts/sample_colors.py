@@ -7,6 +7,8 @@
   sample_colors.py sample  IMAGE --points "x,y;x,y" [--avg N]
   sample_colors.py scan    IMAGE --line "x1,y1,x2,y2" [--tolerance N]
 
+palette 报的每个颜色都取自像素本身；scan 的容差比的是相邻像素，默认 4。
+
 坐标可写像素 ("120,340") 或百分比 ("30%,50%")。点数与线宽为 0 的输入会被拒绝。
 
 颜色同时给出 hex 与 oklch。oklch 一列可以直接粘进 CSS（shadcn 的主题令牌就用这个格式），
@@ -129,6 +131,28 @@ def average_box(img, x, y, radius):
     return box.resize((1, 1), Image.BOX).getpixel((0, 0))
 
 
+EXACT_COLOR_CAP = 1 << 16
+
+
+def count_colors(img):
+    """按出现次数统计颜色，返回 (列表, 是否精确)。
+
+    颜色种类不多时（UI 稿、截图基本都是）逐色精确统计，报出的每个值图上都真实存在；
+    种类过多（照片）才退回量化，这时只能给近似色，调用方要如实标注。
+    """
+    exact = img.getcolors(EXACT_COLOR_CAP)
+    if exact is not None:
+        return exact, True
+
+    quantized = img.quantize(colors=256, method=Image.MEDIANCUT)
+    palette = quantized.getpalette()
+    counts = [
+        (count, tuple(palette[index * 3 : index * 3 + 3]))
+        for count, index in quantized.getcolors()
+    ]
+    return counts, False
+
+
 def cmd_info(args):
     img = load(args.image)
     print(f"路径      {args.image}")
@@ -146,29 +170,34 @@ def cmd_palette(args):
         if len(parts) != 4:
             sys.exit("--crop 应形如 'x,y,w,h'")
         x, y = parse_point(f"{parts[0]},{parts[1]}", img.size)
-        w, h = int(float(parts[2])), int(float(parts[3]))
+        try:
+            w, h = int(float(parts[2])), int(float(parts[3]))
+        except ValueError:
+            sys.exit("--crop 的宽高要写像素值，如 '100,80,320,200'")
         if w <= 0 or h <= 0:
             sys.exit("--crop 的宽高必须大于 0")
         img = img.crop((x, y, min(img.width, x + w), min(img.height, y + h)))
 
     total = img.width * img.height
-    quantized = img.quantize(colors=max(2, args.top), method=Image.MEDIANCUT)
-    palette = quantized.getpalette()
-    counts = sorted(quantized.getcolors(), key=lambda item: item[0], reverse=True)
+    counts, exact = count_colors(img)
+    counts.sort(key=lambda item: item[0], reverse=True)
 
+    kind = "逐色精确统计" if exact else "近似色（颜色种类过多，已量化到 256 色）"
     print(f"区域      {img.width} x {img.height} px，共 {total} 像素")
-    print(f"主色      Top {args.top}，按占比降序，低于 {args.min_share:g}% 的不列")
+    print(f"主色      {kind}，最多 {args.top} 行，低于 {args.min_share:g}% 的不列")
     print()
     print(f"{'#':>3}  {'hex':<9} {'oklch':<28} {'rgb':<16} {'占比':>7}   条带")
     print("-" * 85)
 
     shown = 0
-    for count, index in counts:
+    for count, rgb in counts:
         share = count / total * 100
         if share < args.min_share:
             continue
-        rgb = tuple(palette[index * 3 : index * 3 + 3])
         shown += 1
+        if shown > args.top:
+            shown -= 1
+            break
         bar = "█" * max(1, round(share / 2))
         print(
             f"{shown:>3}  {hex_of(rgb):<9} {oklch_of(rgb):<28} {str(rgb):<16} "
@@ -223,28 +252,32 @@ def cmd_scan(args):
     segments = []
     for offset, (x, y, rgb) in enumerate(samples):
         if segments:
-            last = segments[-1]
-            drift = max(abs(rgb[i] - last["rgb"][i]) for i in range(3))
+            previous = samples[offset - 1][2]
+            drift = max(abs(rgb[i] - previous[i]) for i in range(3))
             if drift <= args.tolerance:
+                last = segments[-1]
+                last["end"] = (x, y)
                 last["length"] += 1
                 continue
-        segments.append({"start": (x, y), "offset": offset, "rgb": rgb, "length": 1})
+        segments.append({"start": (x, y), "end": (x, y), "rgb": rgb, "length": 1})
 
-    print(f"扫描      ({x1},{y1}) -> ({x2},{y2})，{steps} 步，容差 {args.tolerance}/通道")
+    print(f"扫描      ({x1},{y1}) -> ({x2},{y2})，{steps} 步，容差 {args.tolerance}/通道（比相邻像素）")
     print(f"总长      {steps} px")
     print()
     # oklch 排在最后：本命令的主产出是长度，超宽时被折到下一行的应该是颜色而不是尺寸
-    print(f"{'#':>3}  {'hex':<9} {'rgb':<16} {'长度':>7}  {'起点':<12} {'沿线偏移':>10}  oklch")
+    print(f"{'#':>3}  {'hex':<9} {'rgb':<16} {'长度':>7}  {'起点':<12} {'终点':<12}  oklch")
     print("-" * 95)
     for index, seg in enumerate(segments, start=1):
         start = f"{seg['start'][0]},{seg['start'][1]}"
+        end = f"{seg['end'][0]},{seg['end'][1]}"
         print(
             f"{index:>3}  {hex_of(seg['rgb']):<9} {str(seg['rgb']):<16} "
-            f"{seg['length']:>5} px  {start:<12} {seg['offset']:>7} px  {oklch_of(seg['rgb'])}"
+            f"{seg['length']:>5} px  {start:<12} {end:<12}  {oklch_of(seg['rgb'])}"
         )
 
     print()
-    print("分段长度就是间距与尺寸。多扫几条线取一致值，落在抗锯齿上的那一段要忽略。")
+    print("分段长度就是间距与尺寸。容差比的是相邻像素，平缓渐变会合成一段，那种位置用 sample 定点确认。")
+    print("多扫几条线取一致值，落在抗锯齿上的那一段要忽略。")
 
 
 def main():
@@ -258,10 +291,10 @@ def main():
     p_info.add_argument("image")
     p_info.set_defaults(func=cmd_info)
 
-    p_pal = sub.add_parser("palette", help="主色聚类")
+    p_pal = sub.add_parser("palette", help="主色统计（逐色精确，颜色过多时退回量化）")
     p_pal.add_argument("image")
     p_pal.add_argument("--crop", help="只统计该区域，'x,y,w,h'，坐标可写百分比")
-    p_pal.add_argument("--top", type=int, default=16, help="最多列出几种颜色，默认 16")
+    p_pal.add_argument("--top", type=int, default=16, help="最多列几行，默认 16")
     p_pal.add_argument("--min-share", type=float, default=0.5, help="过滤阈值，百分比，默认 0.5")
     p_pal.set_defaults(func=cmd_palette)
 
@@ -274,7 +307,7 @@ def main():
     p_scan = sub.add_parser("scan", help="沿线条扫描，输出颜色分段与像素长度")
     p_scan.add_argument("image")
     p_scan.add_argument("--line", required=True, help="'x1,y1,x2,y2'，坐标可写百分比")
-    p_scan.add_argument("--tolerance", type=int, default=8, help="同一段的通道容差，默认 8")
+    p_scan.add_argument("--tolerance", type=int, default=4, help="相邻像素的通道容差，默认 4")
     p_scan.set_defaults(func=cmd_scan)
 
     args = parser.parse_args()
