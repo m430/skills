@@ -1,0 +1,5 @@
+interface:
+  display_name: "Design from Image"
+  short_description: "Extract a project design system from a reference image"
+policy:
+  allow_implicit_invocation: false

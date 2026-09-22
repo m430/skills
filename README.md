@@ -63,7 +63,7 @@ scripts/link-skills.sh
 
 ```mermaid
 flowchart LR
-    P0["阶段 0 · 准备<br/>setup-skills"] --> P1["阶段 1 · 需求<br/>grill-with-docs"]
+    P0["阶段 0 · 准备<br/>setup-skills + design-from-image"] --> P1["阶段 1 · 需求<br/>grill-with-docs"]
     P1 -->|设计问题需要一个可运行的答案| P2["阶段 2 · 设计<br/>prototype"]
     P2 -->|带着结论回来| P1
     P1 -->|多会话构建| P3["阶段 3 · 计划<br/>add-sprint → plan-sprint"]
@@ -76,7 +76,7 @@ flowchart LR
 
 ### 阶段 0 · 准备（每仓库一次）
 
-技能：[setup-skills](./skills/engineering/setup-skills/SKILL.md)
+技能：[setup-skills](./skills/engineering/setup-skills/SKILL.md)、[design-from-image](./skills/engineering/design-from-image/SKILL.md)
 
 ```mermaid
 flowchart LR
@@ -85,7 +85,17 @@ flowchart LR
     C --> O["产出：docs/agents/ 下的配置<br/>+ AGENTS.md 的 Agent skills 块"]
 ```
 
-**产出**：一份仓库级配置（迭代产物在哪、领域文档在哪）。之后每个技能会话都从 `AGENTS.md` 的 `## Agent skills` 块与 `docs/agents/` 读约定；`sprints/` 是固定约定，不用配置。
+有 UI 的仓库还要一份设计系统：`setup-skills` 只登记约定，产物由 `design-from-image` 出。给它一张设计参考图，它逐控件按像素取色、量出字阶与间距、归纳成令牌，缺口当面问清，最后写出 `design.md`，并把块里那一节换成读文件的说法。
+
+```mermaid
+flowchart LR
+    I["一张设计参考图"] --> X["读控件、按像素取色<br/>归纳成令牌"]
+    X --> Q["缺口提问<br/>最多 5 个，一次一个"]
+    Q --> SG["一次性核对页<br/>对着参考图比对"]
+    SG --> D["写入 design.md<br/>+ Agent skills 块登记"]
+```
+
+**产出**：一份仓库级配置（迭代产物在哪、领域文档在哪），以及 UI 项目的 `design.md`（颜色、排版、间距、组件规范，每条标注是观察到、裁定还是推断）。之后每个技能会话都从 `AGENTS.md` 的 `## Agent skills` 块与 `docs/agents/` 读约定；`sprints/` 是固定约定，不用配置。
 
 ### 阶段 1 · 需求（把想法磨锐）
 
@@ -223,7 +233,8 @@ flowchart LR
 - **[implement-story](./skills/engineering/implement-story/SKILL.md)**: 实现一条 story，在预先约定的接缝（seam）驱动 `/tdd`，收尾跑 `/code-review` 后提交，完成后更新 story 状态。
 - **[close-sprint](./skills/engineering/close-sprint/SKILL.md)**: 评估迭代完成情况并写入 `SPRINT.md`，关闭迭代；未完成的 story 逐条定好去向。
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: 扫描代码库寻找深化机会，以可视化 HTML 报告呈现，选定后进入拷问循环。
-- **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（迭代工作区约定、领域文档布局）。使用其他工程技能前每仓库运行一次。
+- **[setup-skills](./skills/engineering/setup-skills/SKILL.md)**: 为本仓库配置工程技能（迭代工作区约定、领域文档布局，有 UI 的仓库还登记设计系统）。使用其他工程技能前每仓库运行一次。
+- **[design-from-image](./skills/engineering/design-from-image/SKILL.md)**: 从一张设计参考图提取项目级设计系统，写出仓库根目录的 `design.md`（配色按角色、排版、间距、形状与深度、组件规范，每条标注观察到 / 裁定 / 推断），并在 `Agent skills` 块里登记，供后续 UI 工作遵循。有 UI 的仓库运行一次。
 
 **Model-invoked**
 

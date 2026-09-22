@@ -15,7 +15,8 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[implement-story](./implement-story/SKILL.md)**: Build the work one story file describes, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing, then update the story's status.
 - **[close-sprint](./close-sprint/SKILL.md)**: Assess the sprint's completion into `SPRINT.md` and close it, deciding where each unfinished story goes.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-skills](./setup-skills/SKILL.md)**: Configure this repo for the engineering skills: the `sprints/` workspace convention and the domain doc layout. Run once per repo.
+- **[setup-skills](./setup-skills/SKILL.md)**: Configure this repo for the engineering skills: the `sprints/` workspace convention, the domain doc layout, and (in repos with UI) registration of the design system. Run once per repo.
+- **[design-from-image](./design-from-image/SKILL.md)**: Extract a project design system from one reference image into a root `design.md`: colours sampled from pixels, type scale, spacing, component specs, and an explicit list of the gaps the image cannot answer. Run once per repo that has UI.
 
 ## Model-invoked
 
